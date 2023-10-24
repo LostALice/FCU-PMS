@@ -1,25 +1,40 @@
 # Feng Chia University Project Management System (PMS)
+
 # 逢甲大學專題管理系統
 
-# Demo site
-> *https://pms.tyrantrex.icu*
+# [Demo Website](https://pms.tyrantrex.icu)
 
-```
-    Admin Role:
-        username: T9999999
-        password: Admin12345678
+# Demo Account
 
-    Teacher Role:
-        username: T1111111
-        password: Abc12345678
+| Role          | Username/nid | Password      |
+| ------------- | ------------ | ------------- |
+| administrator | T9999999     | Admin12345678 |
+| Teacher       | T1111111     | Abc12345678   |
+| Student       | D0000000     | Xyz87654321   |
 
-    Student Role:
-        username: D0000000
-        password: Xyz87654321
-```
+---
 
-## frontend repository
-> https://github.com/LostALice/pms
+# Frontend
 
-## backend repository
-> https://github.com/LostALice/pmsschool_website
+> ## [Repository](https://github.com/LostALice/pms)
+>
+> ## [Readme.md](./Frontend/README.md)
+
+# Backend
+
+> ## [Repository](https://github.com/LostALice/pmsschool_website)
+>
+> ## [Readme.md](./Backend/README.md)
+
+---
+
+# Issues
+> ## [GitHub Issue](https://github.com/LostALice/FCU-PMS/issues)
+
+---
+# Contact
+| Contact          |  |
+| ------------- | ------------- |
+| Email | 63731417matthew@gmail.com |
+| Discord1 | warabimochiwaikagadesuka |
+| Discord2 | aki.no.icey |
