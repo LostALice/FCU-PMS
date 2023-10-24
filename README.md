@@ -29,12 +29,15 @@
 ---
 
 # Issues
+
 > ## [GitHub Issue](https://github.com/LostALice/FCU-PMS/issues)
 
 ---
+
 # Contact
-| Contact          |  |
-| ------------- | ------------- |
-| Email | 63731417matthew@gmail.com |
-| Discord1 | warabimochiwaikagadesuka |
-| Discord2 | aki.no.icey |
+
+| Contact  |                           |
+| -------- | ------------------------- |
+| Email    | 63731417matthew@gmail.com |
+| Discord1 | warabimochiwaikagadesuka  |
+| Discord2 | aki.no.icey               |
