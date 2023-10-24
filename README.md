@@ -20,7 +20,7 @@
 
 # Backend
 
-> ## [Repository](https://github.com/LostALice/pmsschool_website)
+> ## [Repository](https://github.com/LostALice/school_website)
 >
 > ## [Readme.md](./Backend/README.md)
 
