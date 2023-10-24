@@ -16,7 +16,6 @@
 
 ```
 1.  Student
-
     - view
       - subject
         - project
@@ -29,7 +28,6 @@
       - profile
 
 2.  Teacher
-
     - view
       - student.view
     - create
