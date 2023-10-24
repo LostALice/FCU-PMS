@@ -6,17 +6,15 @@
 
 | Level | Role      |
 | ----- | --------- |
-| 0     | no access |
-| 1     | student   |
-| 2     | teacher   |
-| 3     | admin     |
+| 0     | No access |
+| 1     | Student   |
+| 2     | Teacher   |
+| 3     | Admin     |
 
-```
 
 # Role permissions
 
 ```
-
 1.  Student
 
     - view
@@ -55,7 +53,6 @@
       - teacher.add
     - edit
       - password
-
 ```
 
 # Route structure
@@ -86,7 +83,4 @@
       - new
 - profile
 - Error pages (404, 403)
-
-```
-
 ```
