@@ -17,3 +17,9 @@
         username: D0000000
         password: Xyz87654321
 ```
+
+## frontend repository
+> https://github.com/LostALice/pms
+
+## backend repository
+> https://github.com/LostALice/pmsschool_website
