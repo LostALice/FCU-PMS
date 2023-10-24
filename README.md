@@ -12,8 +12,6 @@
 | Teacher       | T1111111     | Abc12345678   |
 | Student       | D0000000     | Xyz87654321   |
 
----
-
 # Frontend
 
 > ## [Repository](https://github.com/LostALice/pms)
@@ -26,13 +24,9 @@
 >
 > ## [Readme.md](./Backend/README.md)
 
----
-
 # Issues
 
 > ## [GitHub Issue](https://github.com/LostALice/FCU-PMS/issues)
-
----
 
 # Contact
 
