@@ -77,7 +77,7 @@ export async function JWTValidate() {
         }
     })
 
-    return resp.data
+    return resp
 }
 
 // subject
