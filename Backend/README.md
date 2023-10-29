@@ -2,7 +2,7 @@
 
 [![wakatime](https://wakatime.com/badge/user/09ce4786-a8a5-43eb-8a65-50ad8684b5da/project/2f818c62-a844-4b03-9072-4e4658b25ced.svg)](https://wakatime.com/badge/user/09ce4786-a8a5-43eb-8a65-50ad8684b5da/project/2f818c62-a844-4b03-9072-4e4658b25ced)
 
-# Docker env
+# Docker environment
 
 ### The following environment variables edit the default setting of [setting.json](#settingjson) file
 
@@ -17,72 +17,71 @@
 
 # setting.json
 
+### about setting.json
+
+#### setting.json includes all the permission setting, database setting and JSON Web token setting
+
 `The default setting of setting.json file`
 
-```
-{
-    "debug": false,
-    "permissions": {
-        "login": 0,
-        "JWTValidation": 0,
-        "checkPermission": 0,
-        "getPermissionLevel": 0,
-        "TimeoutStatus": 0,
-        "changePassword": 0,
-        "getIconImages": 0,
-        "changeIcon": 0,
-        "getDeadlineProject": 0,
-        "getSubject": 1,
-        "getProject": 1,
-        "getProjectInfo": 1,
-        "getStudentData": 1,
-        "getStudentList": 1,
-        "getStudentInfo": 1,
-        "getTeacherData": 1,
-        "getTeacherList": 1,
-        "getTeacherInfo": 1,
-        "getAnnouncementData": 1,
-        "getAnnouncementInfo": 1,
-        "getGroupData": 1,
-        "getGroupTeacherData": 1,
-        "getGroupStudentData": 1,
-        "getGroupInfo": 1,
-        "getAssignment": 1,
-        "downloadAssignment": 1,
-        "uploadAssignment": 1,
-        "deleteAssignment": 1,
-        "deleteAssignmentItem": 1,
-        "getAssignmentInfo": 1,
-        "createSubject": 2,
-        "deleteSubject": 2,
-        "createProject": 2,
-        "deleteProject": 2,
-        "newStudent": 2,
-        "deleteStudent": 2,
-        "importStudent": 2,
-        "newTeacher": 2,
-        "deleteTeacher": 2,
-        "importTeacher": 2,
-        "createAnnouncement": 2,
-        "deleteAnnouncement": 2,
-        "newGroup": 2,
-        "getGroupToken": 2,
-        "deleteGroup": 2,
-        "markAssignmentScore": 2,
-        "newAssignment": 2,
-        "getLog": 3,
-        "forceChangePassword": 3
-    },
-    "database": {
-        "DATABASE": "PMS",
-        "HOST": "localhost",
-        "USER": "root",
-        "PASSWORD": "Abc!@#$%^&*()"
-    },
-    "JWT": {
-        "JWT_TOKEN_EXPIRE_TIME": 3600,
-        "JWT_SECRET": "May be this is a secret string",
-        "JWT_ALGORITHM": "HS256"
-    }
-}
-```
+| class       | subclass              | datatype | default                        | description                                   |
+| ----------- | --------------------- | -------- | ------------------------------ | --------------------------------------------- |
+| debug       |                       | boolean) | false                          | enable if in development state                |
+| permissions |                       |          |                                | setting of [handler.py](./backend/handler.py) |
+|             | login                 | integer  | 0                              | login function                                |
+|             | JWTValidation         | integer  | 0                              | JWTValidation function                        |
+|             | checkPermission       | integer  | 0                              | checkPermission function                      |
+|             | getPermissionLevel    | integer  | 0                              | getPermissionLevel function                   |
+|             | TimeoutStatus         | integer  | 0                              | TimeoutStatus function                        |
+|             | changePassword        | integer  | 0                              | changePassword function                       |
+|             | getIconImages         | integer  | 0                              | getIconImages function                        |
+|             | changeIcon            | integer  | 0                              | changeIcon function                           |
+|             | getDeadlineProject    | integer  | 1                              | getDeadlineProject function                   |
+|             | getSubject            | integer  | 1                              | getSubject function                           |
+|             | getProject            | integer  | 1                              | getProject function                           |
+|             | getProjectInfo        | integer  | 1                              | getProjectInfo function                       |
+|             | getStudentData        | integer  | 1                              | getStudentData function                       |
+|             | getStudentList        | integer  | 1                              | getStudentList function                       |
+|             | getStudentInfo        | integer  | 1                              | getStudentInfo function                       |
+|             | getTeacherData        | integer  | 1                              | getTeacherData function                       |
+|             | getTeacherList        | integer  | 1                              | getTeacherList function                       |
+|             | getTeacherInfo        | integer  | 1                              | getTeacherInfo function                       |
+|             | getAnnouncementData   | integer  | 1                              | getAnnouncementData function                  |
+|             | getAnnouncementInfo   | integer  | 1                              | getAnnouncementInfo function                  |
+|             | getGroupData          | integer  | 1                              | getGroupData function                         |
+|             | getGroupTeacherData   | integer  | 1                              | getGroupTeacherData function                  |
+|             | getGroupStudentData   | integer  | 1                              | getGroupStudentData function                  |
+|             | getGroupInfo          | integer  | 1                              | getGroupInfo function                         |
+|             | getAssignment         | integer  | 1                              | getAssignment function                        |
+|             | downloadAssignment    | integer  | 1                              | downloadAssignment function                   |
+|             | uploadAssignment      | integer  | 1                              | uploadAssignment function                     |
+|             | deleteAssignment      | integer  | 1                              | deleteAssignment function                     |
+|             | deleteAssignmentItem  | integer  | 1                              | deleteAssignmentItem function                 |
+|             | getAssignmentInfo     | integer  | 1                              | getAssignmentInfo function                    |
+|             | createSubject         | integer  | 2                              | createSubject function                        |
+|             | deleteSubject         | integer  | 2                              | deleteSubject function                        |
+|             | createProject         | integer  | 2                              | createProject function                        |
+|             | deleteProject         | integer  | 2                              | deleteProject function                        |
+|             | newStudent            | integer  | 2                              | newStudent function                           |
+|             | deleteStudent         | integer  | 2                              | deleteStudent function                        |
+|             | importStudent         | integer  | 2                              | importStudent function                        |
+|             | newTeacher            | integer  | 2                              | newTeacher function                           |
+|             | deleteTeacher         | integer  | 2                              | deleteTeacher function                        |
+|             | importTeacher         | integer  | 2                              | importTeacher function                        |
+|             | createAnnouncement    | integer  | 2                              | createAnnouncement function                   |
+|             | deleteAnnouncement    | integer  | 2                              | deleteAnnouncement function                   |
+|             | newGroup              | integer  | 2                              | newGroup function                             |
+|             | getGroupToken         | integer  | 2                              | getGroupToken function                        |
+|             | deleteGroup           | integer  | 2                              | deleteGroup function                          |
+|             | markAssignmentScore   | integer  | 2                              | markAssignmentScore function                  |
+|             | newAssignment         | integer  | 2                              | newAssignment function                        |
+|             | getLog                | integer  | 3                              | getLog function                               |
+|             | forceChangePassword   | integer  | 3                              | forceChangePassword function                  |
+| database    |                       |          |                                | setting of [setup.py](./backend/setup.py)     |
+|             | DATABASE              | string   | PMS                            | database schema name                          |
+|             | HOST                  | string   | localhost                      | MYSQL host ip address                         |
+|             | USER                  | string   | root                           | MYSQL username                                |
+|             | PASSWORD              | string   | Abc!@#$%^&\*()                 | MYSQL password                                |
+| JWT         |                       |          |                                | setting of JSON Web Token                     |
+|             | JWT_TOKEN_EXPIRE_TIME | integer  | 3600                           | JSON Web Token expire time                    |
+|             | JWT_SECRET            | string   | May be this is a secret string | JSON Wb=eb Token secret                       |
+|             | JWT_ALGORITHM         | string   | HS256                          | JSON Web Token encrypt algorithm              |
