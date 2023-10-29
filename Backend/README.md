@@ -83,5 +83,5 @@
 |             | PASSWORD              | string   | Abc!@#$%^&\*()                 | MYSQL password                                |
 | JWT         |                       |          |                                | setting of JSON Web Token                     |
 |             | JWT_TOKEN_EXPIRE_TIME | integer  | 3600                           | JSON Web Token expire time                    |
-|             | JWT_SECRET            | string   | May be this is a secret string | JSON Wb=eb Token secret                       |
+|             | JWT_SECRET            | string   | May be this is a secret string | JSON Web Token secret                         |
 |             | JWT_ALGORITHM         | string   | HS256                          | JSON Web Token encrypt algorithm              |
