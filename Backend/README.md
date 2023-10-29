@@ -25,7 +25,7 @@
 
 | class       | subclass              | datatype | default                        | description                                   |
 | ----------- | --------------------- | -------- | ------------------------------ | --------------------------------------------- |
-| debug       |                       | boolean) | false                          | enable if in development state                |
+| debug       |                       | boolean  | false                          | enable if in development state                |
 | permissions |                       |          |                                | setting of [handler.py](./backend/handler.py) |
 |             | login                 | integer  | 0                              | login function                                |
 |             | JWTValidation         | integer  | 0                              | JWTValidation function                        |
