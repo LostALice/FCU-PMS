@@ -1,5 +1,7 @@
+mysql-connector-python
+python-multipart
+openpyxl
 fastapi
 uvicorn
-mysql-connector-python
-PyJWT
 pandas
+PyJWT

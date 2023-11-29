@@ -29,7 +29,7 @@
                     </div>
                 </div>
 
-                <EasyDataTable :headers="headers" :items="items" :search-value="searchValue" table-class-name="customize-table" show-index>
+                <EasyDataTable :headers="headers" :items="items" :search-value="searchValue" table-class-name="customize-table" show-index alternating>
                     <template #item-nid="item">
                         <router-link :to="`${$route.path}/info/${item.nid}`">{{ item.nid }}</router-link>
                         <a href="/"></a>

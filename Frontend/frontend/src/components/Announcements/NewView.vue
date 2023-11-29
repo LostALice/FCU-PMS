@@ -66,7 +66,7 @@
                 </div>
             </div>
         </form>
-        <AlertBlock :message="message" />
+        <AlertBlock :message="message" @closeBlock="message=``" />
     </div>
 </template>
 
@@ -161,10 +161,7 @@
             message.value = "標題不能為空"
             return
         }
-        const resp = await newAnnouncement(projectUUID, title.value, context.value)
-        if (resp.status_code == 200) {
-            router.push(`/project/${projectUUID}/announcement`)
-        }
+        await newAnnouncement(projectUUID, title.value, context.value)
         router.push(`/project/${projectUUID}/announcement`)
     }
 </script>

@@ -82,7 +82,7 @@
                 </div>
             </div>
         </div>
-        <AlertBlock :message="message" />
+        <AlertBlock :message="message" @closeBlock="message=``" />
     </div>
 </template>
 
@@ -99,14 +99,13 @@
     const imageURL = ref("")
     const message = ref("")
 
-    const file = ref()
+    const file = ref(File)
 
     onMounted(async () => {
         imageURL.value = await getProfileIconImage()
     })
 
     async function uploadImage() {
-        console.log(file.value);
         if (file.value == undefined) {
             message.value = "沒有選取圖片"
             return
@@ -190,5 +189,4 @@
             return
         }
     }
-
 </script>

@@ -14,11 +14,13 @@ class SettingSetupHandler(object):
             self.file_setup()
 
     def file_setup(self):
+        """initialize the setting file"""
         with open("./setting.json", "w+") as f:
             f.write(json.dumps({
                 "debug": False,
                 "permissions": {
                     "login": 0,
+                    "logout": 0,
                     "JWTValidation": 0,
                     "checkPermission": 0,
                     "getPermissionLevel": 0,
@@ -27,6 +29,7 @@ class SettingSetupHandler(object):
                     "getIconImages": 0,
                     "changeIcon": 0,
                     "getDeadlineProject": 0,
+                    "getAboutPage": 0,
                     "getSubject": 1,
                     "getProject": 1,
                     "getProjectInfo": 1,
@@ -66,7 +69,8 @@ class SettingSetupHandler(object):
                     "markAssignmentScore": 2,
                     "newAssignment": 2,
                     "getLog": 3,
-                    "forceChangePassword": 3
+                    "forceChangePassword": 3,
+                    "importUsers": 3,
                 },
                 "database": {
                     "DATABASE": os.getenv("DATABASE") if os.getenv("DATABASE") else "PMS",
@@ -78,6 +82,9 @@ class SettingSetupHandler(object):
                     "JWT_TOKEN_EXPIRE_TIME": os.getenv("JWT_TOKEN_EXPIRE_TIME") if os.getenv("JWT_TOKEN_EXPIRE_TIME") else 3600,
                     "JWT_SECRET": os.getenv("JWT_SECRET") if os.getenv("JWT_SECRET") else "May be this is a secret string",
                     "JWT_ALGORITHM": "HS256"
+                },
+                "CORS": {
+                    "ALLOW_ORIGINS": ["http://localhost:8080", "http://localhost"] + os.getenv("CORS_ALLOW_ORIGINS").split(",")
                 }
             }))
 
@@ -94,9 +101,9 @@ class SQLSetupHandler(object):
             self.database_setting = json_file["database"]
 
         self.DATABASE = self.database_setting["DATABASE"]
+        self.PASSWORD = self.database_setting["PASSWORD"]
         self.HOST = self.database_setting["HOST"]
         self.USER = self.database_setting["USER"]
-        self.PASSWORD = self.database_setting["PASSWORD"]
 
         try:
             self.conn = connector.connect(
@@ -106,7 +113,8 @@ class SQLSetupHandler(object):
             )
         except connector.errors.ProgrammingError:
             print(Exception, flush=True)
-            raise Exception("Wrong password, please edit docker-compose.yaml file or setting.json")
+            raise Exception(
+                "Wrong password, please edit docker-compose.yaml file or setting.json")
 
         self.conn = connector.connect(
             host=self.HOST,
@@ -147,7 +155,7 @@ class SQLSetupHandler(object):
                 PRIMARY KEY (`ANNOUNCEMENTS_ID`)
             )
             ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci"""
-        )
+                            )
         self.conn.commit()
 
         self.curser.execute("""
@@ -165,7 +173,7 @@ class SQLSetupHandler(object):
                 PRIMARY KEY (`TASK_ID`,`PROJECT_ID`)
             )
             ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci"""
-        )
+                            )
         self.conn.commit()
 
         self.curser.execute("""
@@ -179,7 +187,7 @@ class SQLSetupHandler(object):
                 PRIMARY KEY (`TASK_ID`,`FILE_ID`)
             )
             ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci"""
-        )
+                            )
         self.conn.commit()
 
         self.curser.execute("""
@@ -192,7 +200,7 @@ class SQLSetupHandler(object):
                 PRIMARY KEY (`PROJECT_ID`,`GID`,`NID`)
             )
             ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci"""
-        )
+                            )
         self.conn.commit()
 
         self.curser.execute("""
@@ -203,7 +211,7 @@ class SQLSetupHandler(object):
                 PRIMARY KEY (`DATE`)
             )
             ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci"""
-        )
+                            )
         self.conn.commit()
 
         self.curser.execute("""
@@ -219,7 +227,7 @@ class SQLSetupHandler(object):
                 PRIMARY KEY (`NID`)
             )
             ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci"""
-        )
+                            )
         self.conn.commit()
 
         self.curser.execute("""
@@ -230,7 +238,7 @@ class SQLSetupHandler(object):
                 PRIMARY KEY (`PROJECT_ID`,`NID`)
             )
             ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci"""
-        )
+                            )
         self.conn.commit()
 
         self.curser.execute("""
@@ -242,7 +250,7 @@ class SQLSetupHandler(object):
                 PRIMARY KEY (`SUBJECT_ID`,`PROJECT_ID`)
             )
             ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci"""
-        )
+                            )
         self.conn.commit()
 
         self.curser.execute("""
@@ -253,7 +261,7 @@ class SQLSetupHandler(object):
                 PRIMARY KEY (`PROJECT_ID`,`NID`)
             )
             ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci"""
-        )
+                            )
         self.conn.commit()
 
         self.curser.execute("""
@@ -269,7 +277,7 @@ class SQLSetupHandler(object):
                 PRIMARY KEY (`SUBJECT_ID`)
             )
             ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci"""
-        )
+                            )
         self.conn.commit()
 
         self.curser.execute("""
@@ -280,5 +288,5 @@ class SQLSetupHandler(object):
                 PRIMARY KEY (`PROJECT_ID`,`NID`)
             )
             ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci"""
-        )
+                            )
         self.conn.commit()

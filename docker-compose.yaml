@@ -19,9 +19,14 @@ services:
             # mysql ip address
             - HOST=172.30.0.2
             - USER=root
+
             # should be same as mysql.MYSQL_ROOT_PASSWORD
             - PASSWORD=Abc!@#$%^&*()
             - JWT_SECRET=Xyz)(*&^%$#@!)
+
+            # CORS allowed orgins
+            # use "," to split different orgins
+            - CORS_ALLOW_ORIGINS=https://pms.tyrantrex.icu,http://test.tyrantrex.icu
         ports:
           - 8000:8080
         restart: unless-stopped

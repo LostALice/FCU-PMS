@@ -27,7 +27,7 @@
                     :headers="headers"
                     :items="fileList"
                     table-class-name="customize-table"
-                    show-index  />
+                    show-index  alternating />
                 </div>
                 <br>
                 <div class="row">

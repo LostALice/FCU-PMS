@@ -69,7 +69,7 @@
             </div>
             <div class="card-body">
                 <div class="col">
-                    <EasyDataTable :headers="headers" :items="items" table-class-name="customize-table" show-index>
+                    <EasyDataTable :headers="headers" :items="items" table-class-name="customize-table" show-index alternating>
                         <template #item-title="item">
                             <a :href="`/download/${item.taskID}/${item.fileID}/${item.filename}`" @click="download(item)" @click.prevent="" :download="item.filename">{{ item.filename }} </a>
                         </template>
@@ -86,7 +86,7 @@
             </div>
         </div>
         <SubmitView />
-        <AlertBlock :message="message" />
+        <AlertBlock :message="message" @closeBlock="message=``" />
     </div>
 </template>
 

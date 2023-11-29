@@ -2,7 +2,7 @@
     <div>
         <div class="card shadow">
             <div class="card-header py-3">
-                <p class="text-primary m-0 fw-bold" style="font-size: 28px;">{{$route.name}}</p>
+                <p class="text-primary m-0 fw-bold" style="font-size: 28px;">{{ $route.name }}</p>
             </div>
             <div class="card-body mh-100">
                 <div class="alert alert-success" role="alert"><span><strong>從Excel導入前請仔細閱讀說明</strong><br></span></div>
@@ -11,7 +11,8 @@
                         <ul class="list-group list-group-numbered mb-3">
                             <li class="list-group-item w-100"><span>文件格式必須為 .xls 或 .xlsx</span></li>
                             <li class="list-group-item"><span>第一行將不會被導入</span></li>
-                            <li class="list-group-item"><span>格順序應如下所示 </span><span class="bg-warning">NID (大寫), 姓名, 班級, 類型, 科系ID, 科系, 學院ID, 學院<br></span></li>
+                            <li class="list-group-item"><span>格順序應如下所示 </span><span class="bg-warning">NID (大寫), 姓名, 班級, 類型,
+                                    科系ID, 科系, 學院ID, 學院<br></span></li>
                             <li class="list-group-item"><span>NID必須包含在內，否則數據將不會導入</span></li>
                             <li class="list-group-item"><span>NID 不應重複</span></li>
                             <li class="list-group-item"><span>示例提供如下</span></li>
@@ -58,9 +59,7 @@
                         <form>
                             <div class="row">
                                 <div class="col" style="text-align: right;">
-                                    <input
-                                        class="form-control shadow-none"
-                                        type="file"
+                                    <input class="form-control shadow-none" type="file"
                                         accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                                         @change="onFileSelected">
                                     <br>
@@ -69,8 +68,8 @@
                                         </i>&nbsp;清除
                                     </button>
                                     <button class="btn btn-primary shadow-none" type="button" @click="upload">
-                                    <i class="fa fa-upload">
-                                    </i>
+                                        <i class="fa fa-upload">
+                                        </i>
                                         &nbsp;上傳
                                     </button>
                                 </div>
@@ -80,7 +79,7 @@
                 </div>
             </div>
         </div>
-        <AlertBlock :message="message" />
+        <AlertBlock :message="message" @closeBlock="message = ``" />
     </div>
 </template>
 
@@ -106,7 +105,7 @@
         }
         importStudent(projectUUID, fileList.value);
         message.value = "導入成功"
-        router.push("/project/"+projectUUID+"/student")
+        router.push("/project/" + projectUUID + "/student")
     }
 
     function clearAll() {

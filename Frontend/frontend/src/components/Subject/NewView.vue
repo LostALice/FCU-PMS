@@ -75,7 +75,7 @@
                 </form>
             </div>
         </div>
-        <AlertBlock :message="message" />
+        <AlertBlock :message="message" @closeBlock="message=``" />
     </div>
 </template>
 
@@ -95,6 +95,16 @@
     const router = useRouter()
 
     async function submitForm() {
+
+        if (Date.parse(startDate.value) > Date.parse(endDate.value)) {
+            message.value = "日期範圍錯誤"
+            return
+        }
+        if (Date.parse(settlementStartDate.value) > Date.parse(settlementEndDate.value)) {
+            message.value = "結算日期範圍錯誤"
+            return
+        }
+
         if (!projectName.value || !year.value || !startDate.value || !endDate.value || !settlementStartDate.value || !settlementEndDate.value) {
             message.value = "未填必需項目"
             return

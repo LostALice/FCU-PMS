@@ -29,7 +29,7 @@
                 </form>
             </div>
         </div>
-        <AlertBlock :message="message" />
+        <AlertBlock :message="message" @closeBlock="message=``" />
     </div>
 </template>
 

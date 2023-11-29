@@ -11,8 +11,9 @@
                         <ul class="list-group list-group-numbered mb-3">
                             <li class="list-group-item w-100"><span>文件格式必須為 .xls 或 .xlsx</span></li>
                             <li class="list-group-item"><span>第一行將不會被導入</span></li>
-                            <li class="list-group-item"><span>格順序應如下所示 </span><span class="bg-warning">NID (大寫), 姓名, 班級, 類型, 科系ID, 科系, 學院ID, 學院<br></span></li>
+                            <li class="list-group-item"><span>格順序應如下所示 </span><span class="bg-warning">NID (大寫), 姓名, 密碼, 電郵地址(可選)</span></li>
                             <li class="list-group-item"><span>NID必須包含在內，否則數據將不會導入</span></li>
+                            <li class="list-group-item"><span>密碼至少8個字元以上</span></li>
                             <li class="list-group-item"><span>NID 不應重複</span></li>
                             <li class="list-group-item"><span>示例提供如下</span></li>
                         </ul>
@@ -22,35 +23,23 @@
                                     <tr>
                                         <th>NID<br></th>
                                         <th>姓名<br></th>
-                                        <th>班級<br></th>
-                                        <th>類型<br></th>
-                                        <th>科系ID<br></th>
-                                        <th>科系<br></th>
-                                        <th>學院ID<br></th>
-                                        <th>學院<br></th>
+                                        <th>密碼<br></th>
+                                        <th>電郵地址<br></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td>D1234567</td>
                                         <td>陳小明</td>
-                                        <td>人工智慧技術與應用學士學位學程一</td>
-                                        <td>學生</td>
-                                        <td>AITI</td>
-                                        <td>人工智慧技術與應用學士學位學程<br></td>
-                                        <td>AITI</td>
-                                        <td>創能學院</td>
+                                        <td>may be this is a password</td>
+                                        <td><i>null</i></td>
                                     </tr>
                                     <tr></tr>
                                     <tr>
                                         <td>T1234567</td>
                                         <td>陳大明</td>
-                                        <td>人工智慧技術與應用學士學位學程一</td>
-                                        <td>教師</td>
-                                        <td>AITI</td>
-                                        <td>人工智慧技術與應用學士學位學程<br></td>
-                                        <td>AITI</td>
-                                        <td>創能學院</td>
+                                        <td>this string can be a password</td>
+                                        <td>example@example.com</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -85,14 +74,24 @@
 </template>
 
 <script setup>
-    import { importTeacher } from "@/assets/js/helper.js"
+    import { importUser, getPermissionLevel } from "@/assets/js/helper.js"
     import { useRouter } from "vue-router"
-    import { ref } from "vue"
+    import { ref, onMounted } from "vue"
 
+    const router = useRouter()
     const message = ref("")
     const fileList = ref(null)
-    const router = useRouter()
-    const projectUUID = router.currentRoute.value.params.projectID
+
+    onMounted(async () => {
+        message.value = "Warning: You are using admin tool, be careful for those function."
+
+        if (await getPermissionLevel() != 3) {
+            message.value = "YOU SHALL NOT PASS"
+            router.replace("/dashboard")
+            console.log(":<")
+            return
+        }
+    })
 
     function onFileSelected(event) {
         const files = event.target.files[0]
@@ -104,9 +103,8 @@
             message.value = "沒有檔案"
             return
         }
-        importTeacher(projectUUID, fileList.value);
+        importUser(fileList.value);
         message.value = "導入成功"
-        router.push("/project/"+projectUUID+"/teacher")
     }
 
     function clearAll() {

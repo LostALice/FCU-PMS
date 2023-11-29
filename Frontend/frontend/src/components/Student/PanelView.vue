@@ -29,12 +29,10 @@
                     </div>
                 </div>
                 <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
-
-                    <EasyDataTable :headers="headers" :items="items" table-class-name="customize-table" :search-value="searchValue" show-index>
+                    <EasyDataTable :headers="headers" :items="items" table-class-name="customize-table" :search-value="searchValue" show-index alternating>
                         <template #item-nid="item">
                             <router-link :to="`${$route.path}/info/${item.nid}`">{{ item.nid }}</router-link>
                         </template>
-
                         <template #item-operation="item" v-if="permissionLevel>1">
                             <div class="btn-group" role="group">
                                 <button class="btn btn-primary shadow-none" style="background: #e74a3b;width: 42px;" @click="deleteItem(item)">
@@ -43,7 +41,6 @@
                             </div>
                         </template>
                     </EasyDataTable>
-
                 </div>
             </div>
         </div>
@@ -56,9 +53,9 @@
     import { ref, onMounted } from "vue";
     import "vue3-easy-data-table";
 
+    const permissionLevel = ref(localStorage["permissionLevel"])
     const searchValue = ref("")
     const items = ref([])
-    const permissionLevel = ref(localStorage["permissionLevel"])
 
     const projectUUID = useRouter().currentRoute.value.params.projectID
 

@@ -1,7 +1,6 @@
 <template>
     <div>
         <section id="login-page" class="login-dark fixed-top" style="backdrop-filter: blur(10px)" >
-            <AlertBlock :message="message" />
             <form method="post" style="background: rgba(15,25,35,0.9)">
                 <div class="illustration">
                     <i class="icon ion-ios-locked-outline"></i>
@@ -20,6 +19,7 @@
                 </div>
             </form>
         </section>
+        <AlertBlock :message="message" @closeBlock="message=``" />
     </div>
 </template>
 
@@ -50,20 +50,18 @@
 
         const response = await verifyLogin(nid.value, hashPassword.value)
 
-        if (response.status !== 200) {
-            console.log(response);
-            message.value = "伺服器內部錯誤：" + response
+        if (!response["access"]) {
+            message.value = "伺服器內部錯誤: 500"
         }
 
         // Store jwt token to localStorage for future use
-        if (response.data.access) {
+        if (response.access) {
             localStorage["nid"] = nid.value.toLocaleUpperCase()
-            localStorage["token"] = response.data.token["x-access-token"]
+            localStorage["token"] = response.token["x-access-token"]
             await getPermissionLevel()
             router.replace("/dashboard")
         } else {
             message.value = "用戶名或密碼不正確"
-            alert("用戶名或密碼不正確")
             return
         }
     }

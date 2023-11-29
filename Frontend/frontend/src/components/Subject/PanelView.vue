@@ -30,7 +30,7 @@
                 </div>
                 <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
 
-                    <EasyDataTable :headers="headers" :items="items" :search-value="searchValue" table-class-name="customize-table" show-index>
+                    <EasyDataTable :headers="headers" :items="items" :search-value="searchValue" table-class-name="customize-table" show-index alternating>
                         <template #item-name="item">
                             <router-link :to="`/project/${item.subjectUUID}`">{{ item.name }}</router-link>
                         </template>
@@ -43,10 +43,10 @@
                             </div>
                         </template>
                     </EasyDataTable>
-
                 </div>
             </div>
         </div>
+        <AlertBlock :message="message" @closeBlock="message=``" />
     </div>
 </template>
 
@@ -57,6 +57,7 @@
 
     const permissionLevel = ref(localStorage["permissionLevel"])
     const searchValue = ref("");
+    const message = ref("")
     const items = ref([])
 
     const headers = [
@@ -112,6 +113,7 @@
 
     function deleteItem(item) {
         if (!confirm("確定刪除項目？")) {
+            message.value = "刪除成功"
             return
         }
         items.value.splice(item.index-1, 1)

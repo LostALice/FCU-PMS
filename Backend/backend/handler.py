@@ -5,16 +5,20 @@ from setup import SQLSetupHandler, SettingSetupHandler
 import mysql.connector as connector
 import json
 
+
 class SQLHandler:
-    def __init__(self):
+    def __init__(self) -> None:
         self.sql_init()
 
-    def sql_init(self):
-        """
-            Env variables:
+    def sql_init(self) -> None:
+        """ the setup of the sql connection including create schema and database
+            environment variables:
                 JWT_TOKEN_EXPIRE_TIME # in seconds
                 JWT_SECRET  # any string
                 JWT_ALGORITHM # HMAC, RSA, ECDSA, etc
+
+        Raises:
+            error: no database detected => create schema and database
         """
         try:
             with open("setting.json", "r") as f:
@@ -55,16 +59,41 @@ class SQLHandler:
 
     # close the connection after query executed
     def sql_term(func) -> any:
-        def warp(self, *data):
-            _ = func(self, *data)
-            LOGGER().log(func.__name__, data)
-            self.conn.close()
-            return _
-        return warp
+        """close the connection after query executed
+
+        Args:
+            function (func): the function needed to close the connection
+
+        Returns:
+            function: the function that need to close connection
+        """
+        try:
+            def warp(self, *data):
+                """log the function to logger with args
+
+                Returns:
+                    func: [function] the function itself
+                """
+                _ = func(self, *data)
+                LOGGER().log(func.__name__, data)
+                self.conn.close()
+                return _
+            return warp
+        except Exception as exception:
+            print(exception, flush=True)
+            return False
+
+
+#################################################################################################
+# the following function are the functions in main.py you can read the documentation in main.py #
+# so i decided not to copy the documentation down below as i am really lazy. :>                 #
+#################################################################################################
 
     # subject
+
+
     @sql_term
-    def getSubjectData(self, nid: str = "") -> dict:
+    def getSubjectData(self, nid: str) -> dict:
         self.cursor.execute("""
             SELECT
                 subject.SUBJECT_ID,
@@ -380,7 +409,9 @@ class SQLHandler:
             JOIN
                 member ON member.PROJECT_ID = announcements.PROJECT_ID
             WHERE
-                member.PROJECT_ID = %s AND announcements.ENABLE = 1""", (
+                member.PROJECT_ID = %s AND announcements.ENABLE = 1
+            GROUP BY
+                announcements.ANNOUNCEMENTS_ID""", (
             projectUUID,
         ))
 
@@ -600,7 +631,7 @@ class SQLHandler:
 
     # group
     @sql_term
-    def getGroupData(self, projectUUID: str) -> list:
+    def getGroupData(self, params: str) -> list:
         self.cursor.execute("""
             SELECT
                 gp.GID
@@ -608,9 +639,9 @@ class SQLHandler:
                 `group` as gp
             WHERE
                 gp.PROJECT_ID = %s
-                AND gp.NID = "D1177531"
+                AND gp.NID = %s
                 AND gp.ENABLE = 1;""",
-                            (projectUUID,))
+                            (params["projectUUID"], params["nid"]))
         group_id = self.cursor.fetchall()
         groupData = []
         for i in group_id:
@@ -653,7 +684,7 @@ class SQLHandler:
     @sql_term
     def newGroup(self, params: dict) -> bool:
         self.cursor.execute("""
-            INSERT IGNORE INTO
+            INSERT INTO
                 `group` (PROJECT_ID, GID, NID, NAME)
             VALUES
                 (%s, %s, %s, %s)""",
@@ -779,7 +810,7 @@ class SQLHandler:
     @sql_term
     def getAssignment(self, params: dict) -> bool:
         self.cursor.execute("""
-            SELECT gp.gid
+            SELECT gp.GID
             FROM
                 `group` AS gp
             WHERE
@@ -826,7 +857,7 @@ class SQLHandler:
                         i[5])
                     assignment_data.append(group_data)
 
-            return assignment_data
+        return assignment_data
 
     @sql_term
     def deleteAssignment(self, params: dict):
@@ -1054,11 +1085,17 @@ class SQLHandler:
         c = self.conn.cursor(dictionary=True)
         c.execute("""
         SELECT
-            assignment.TASK_ID, assignment.PROJECT_ID, assignment.NAME, assignment.SUBMISSION_DATE
+            assignment.TASK_ID,
+            assignment.PROJECT_ID,
+            assignment.NAME as ASSIGNMENT_NAME,
+            assignment.SUBMISSION_DATE,
+            project.NAME as PROJECT_NAME
         FROM
             assignment
         JOIN member
             ON assignment.PROJECT_ID = member.PROJECT_ID
+        JOIN project
+            ON member.PROJECT_ID = project.PROJECT_ID
         JOIN `group` AS gp
             ON gp.PROJECT_ID = member.PROJECT_ID AND gp.NID = member.NID AND gp.GID = assignment.GID
         WHERE
@@ -1071,7 +1108,32 @@ class SQLHandler:
             ABS(DATEDIFF(assignment.SUBMISSION_DATE, NOW())) DESC""",
                   (nid,))
 
+        # return {
+        #  "TASK_ID": "task_id",
+        #  "PROJECT_ID": "project_id",
+        #  "NAME": "name of the assignment"
+        #  "SUBMISSION_DATE": datetime()
+        # }
         return c.fetchall()
+
+    # about page
+
+    @sql_term
+    def getAboutPage(self, target_nid: str) -> dict:
+        c = self.conn.cursor(dictionary=True)
+        c.execute("""
+                  SELECT
+                    login.NID,
+                    login.USERNAME,
+                    login.EMAIL,
+                    login.LAST_LOGIN
+                FROM
+                    login
+                WHERE
+                    login.NID = %s;""", (target_nid, ))
+
+        return c.fetchall()
+
 
     @sql_term
     def getPermission(self, nid: str) -> int:
@@ -1087,12 +1149,40 @@ class SQLHandler:
         else:
             return 0
 
+    @sql_term
+    def importUsers(self, user_data: dict) -> bool:
+        self.cursor.execute("""
+            INSERT IGNORE INTO login (
+                login.NID,
+                login.USERNAME,
+                login.PASSWORD,
+                login.EMAIL,
+                login.PERMISSION
+            )
+            VALUES
+                (%s, %s, %s, %s, %s)""",
+                            (
+                                user_data["NID"],
+                                user_data["USERNAME"],
+                                user_data["PASSWORD"],
+                                user_data["EMAIL"],
+                                user_data["PERMISSION"]
+                            ))
+        self.conn.commit()
+        return True
+
+
 class LOGGER(SQLHandler):
-    def __init__(self):
+    def __init__(self) -> None:
         self.sql_init()
         self.cursor = self.conn.cursor(dictionary=True)
 
     def log(self, event: str, args:  list) -> None:
+        """log the record into database
+
+        Returns:
+            None
+        """
         self.cursor.execute("""
             INSERT INTO log
                 (log.EVENT, log.ARGs)
@@ -1102,5 +1192,13 @@ class LOGGER(SQLHandler):
         self.conn.commit()
 
     def record(self) -> list:
+        """get record from database
+
+        Returns:
+            record: [
+                event: [str] the event/function name
+                args: [tuple|str] the argument pass into the function
+            ]
+        """
         self.cursor.execute("""SELECT * FROM log LIMIT 5000""")
         return self.cursor.fetchall()

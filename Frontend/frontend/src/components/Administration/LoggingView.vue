@@ -20,9 +20,10 @@
                         </div>
                     </div>
                 </div>
-                <EasyDataTable :headers="headers" :items="items" :sort-by="sortBy" :sort-type="sortType" :search-value="searchValue" table-class-name="customize-table" show-index />
+                <EasyDataTable :headers="headers" :items="items" :sort-by="sortBy" :sort-type="sortType" :search-value="searchValue" table-class-name="customize-table" show-index alternating />
             </div>
         </div>
+        <AlertBlock :message="message" @closeBlock="message=``" />
     </div>
 </template>
 
@@ -38,6 +39,7 @@
     const items = ref([])
     const sortBy = "timestamp";
     const sortType = "desc";
+    const message = ref("")
 
     const headers = [
         {
@@ -58,9 +60,13 @@
     ]
 
     onMounted(async () => {
+        message.value = "Warning: You are using admin tool, be careful for those function."
+
         if (await getPermissionLevel() != 3) {
+            message.value = "YOU SHALL NOT PASS"
             router.replace("/dashboard")
             console.log(":<")
+            return
         }
 
         const data = await getLog()

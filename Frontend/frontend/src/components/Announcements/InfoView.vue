@@ -12,7 +12,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <iframe :srcdoc="context" class="h-100"></iframe>
+                <iframe :srcdoc="context" class="h-100 w-100"></iframe>
                 </div>
             <footer class="card-footer">
                 <div class="row">

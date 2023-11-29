@@ -30,7 +30,7 @@
                 </div>
                 <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
 
-                    <EasyDataTable :headers="headers" :items="items" table-class-name="customize-table" show-index>
+                    <EasyDataTable :headers="headers" :items="items" table-class-name="customize-table" show-index alternating>
                         <template #item-name="item">
                             <router-link :to="`${$route.path}/info/${item.groupUUID}`">{{ item.name }} </router-link>
                         </template>
@@ -43,10 +43,10 @@
                             </div>
                         </template>
                     </EasyDataTable>
-
                 </div>
             </div>
         </div>
+        <AlertBlock :message="message" @closeBlock="message=``" />
     </div>
 </template>
 
@@ -64,6 +64,7 @@
     const projectUUID = router.currentRoute.value.params.projectID
     const permissionLevel = ref(localStorage["permissionLevel"])
     const items = ref([])
+    const message = ref("")
 
     const headers = [
         {
@@ -101,11 +102,12 @@
         }
     })
 
-    function deleteItem(item) {
+    async function deleteItem(item) {
         if (!confirm("確定刪除項目？")) {
             return
         }
         items.value.splice(item.index-1, 1)
-        deleteGroup(item.groupUUID, projectUUID)
+        await deleteGroup(item.groupUUID, projectUUID)
+        message.value = "刪除成功"
     }
 </script>

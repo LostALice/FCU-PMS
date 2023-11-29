@@ -6,53 +6,61 @@
             </div>
             <div class="card-body mh-100">
                 <div class="row">
-                    <div class="col-xxl-5 text-center align-middle">
-                        <p class="lead" style="font-size: 24px;">可選擇教授</p>
-                    </div>
-                    <div class="col-xxl-5 offset-xxl-2 text-center align-middle">
-                        <p class="lead" style="font-size: 24px;">已選教授</p>
-                    </div>
-                </div>
-                <div class="row pb-2">
-                    <div class="col text-center align-middle">
-                        <input type="text" class="form-control shadow-none" v-model="studentSearchValue">
-                    </div>
-                    <div class="col-xxl-2 text-center pt-2">
-                        <p class="lead" style="font-size: 18px;">搜尋</p>
-                    </div>
-                    <div class="col text-center align-middle">
-                        <input type="text" class="form-control shadow-none" v-model="selectSearchValue">
-                    </div>
-                </div>
-                <div class="row">
                     <div class="col">
-                        <EasyDataTable
-                            :headers="studentHeaders"
-                            :items="studentItems"
-                            v-model:items-selected="studentSelected"
-                            show-index
-                            :search-value="studentSearchValue"
-                        >
-                        </EasyDataTable>
+                        <div class="row-xxl-5 text-center align-middle">
+                            <p class="lead" style="font-size: 24px;">可選擇教授</p>
+                        </div>
+                        <div class="col text-center align-middle">
+                            <input type="text" class="form-control shadow-none" v-model="teacherSearchValue">
+                        </div>
+                        <br>
+                        <div class="col">
+                            <EasyDataTable
+                                :headers="teacherHeaders"
+                                :items="teacherItems"
+                                v-model:items-selected="teacherSelected"
+                                show-index
+                                :search-value="teacherSearchValue"
+                                alternating>
+                            </EasyDataTable>
+                      </div>
                     </div>
-                    <div class="col-xxl-2 text-center border-start-warning">
-                        <p class="lead mt-3" style="font-size: 18px;">選擇已選</p>
-                        <button class="btn btn-primary shadow-none w-100 my-3" type="button" @click="saveTeacherList">
-                            <i class="fa fa-save"></i>
-                            &nbsp;Save
-                        </button>
-                        <router-link class="btn btn-primary shadow-none w-100" role="button" to="import">
-                            <i class="fa fa-download"></i>
-                            &nbsp;Import from excel
-                        </router-link>
+
+                    <div class="col-xxl-2">
+                        <div class="row-xxl-5 text-center align-middle">
+                            <p class="lead" style="font-size: 25px;">⠀</p>
+                        </div>
+                        <div class="row-xxl-5 text-center align-middle">
+                            <p class="lead">搜尋</p>
+                        </div>
+                        <div class="row-xxl-2 text-center border-start-warning item">
+                            <button class="btn btn-primary shadow-none w-100 my-3" type="button" @click="saveTeacherList">
+                                <i class="fa fa-save"></i>
+                                &nbsp;儲存
+                            </button>
+                            <router-link class="btn btn-primary shadow-none w-100" role="button" to="import">
+                                <i class="fa fa-download"></i>
+                                &nbsp;從Excel 匯入
+                            </router-link>
+                        </div>
                     </div>
+
                     <div class="col">
-                        <EasyDataTable
-                            :headers="SelectHeaders"
-                            :items="studentSelected"
-                            show-index
-                            :search-value="selectSearchValue">
-                        </EasyDataTable>
+                        <div class="row-xxl-5 text-center align-middle">
+                            <p class="lead" style="font-size: 24px;">已選教授</p>
+                        </div>
+                        <div class="col text-center align-middle">
+                            <input type="text" class="form-control shadow-none" v-model="selectSearchValue">
+                        </div>
+                        <br>
+                        <div class="col">
+                            <EasyDataTable
+                                :headers="SelectHeaders"
+                                :items="teacherSelected"
+                                show-index
+                                :search-value="selectSearchValue" alternating>
+                            </EasyDataTable>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -69,10 +77,10 @@
     const router = useRouter()
     const projectUUID = useRouter().currentRoute.value.params.projectID
 
-    const studentSearchValue = ref("")
-    const studentSelected = ref([]);
-    const studentItems = ref([])
-    const studentHeaders = [
+    const teacherSearchValue = ref("")
+    const teacherSelected = ref([]);
+    const teacherItems = ref([])
+    const teacherHeaders = [
         {
             text: "NID",
             value: "nid",
@@ -100,19 +108,19 @@
     ];
 
     onMounted(async () => {
-        const studentList = await getTeacherList(projectUUID);
+        const teacherList = await getTeacherList(projectUUID);
 
-        for (const teacher of studentList) {
-            studentItems.value.push(teacher)
+        for (const teacher of teacherList) {
+            teacherItems.value.push(teacher)
         }
 
     })
 
     function saveTeacherList(){
-        console.log(studentSelected.value)
-        for (const i of studentSelected.value) {
+        console.log(teacherSelected.value)
+        for (const i of teacherSelected.value) {
             newTeacher(i.nid, projectUUID)
         }
-        router.go(-1)
+        router.push(`/project/${projectUUID}/teacher`)
     }
 </script>

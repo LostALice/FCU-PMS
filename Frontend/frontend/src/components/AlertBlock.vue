@@ -10,22 +10,23 @@
 
 <script setup>
     import { ref, onUpdated } from "vue";
-
     let props = defineProps({
         message: String
     })
+    const emit = defineEmits(["closeBlock"])
 
     const AlertMessage = ref(props.message)
 
     onUpdated(() => {
         AlertMessage.value = props.message
+        console.log(AlertMessage.value)
         setTimeout(() => {
-            AlertMessage.value = ""
+            emit("closeBlock")
         }, 3000)
     })
 
     function modalClicked() {
-        AlertMessage.value = ""
+        emit("closeBlock")
     }
 </script>
 
@@ -36,6 +37,7 @@
         right: 15px;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
         padding: 20px;
+        z-index: 2000;
     }
     .popup-modal:hover {
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);

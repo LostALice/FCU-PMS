@@ -26,9 +26,9 @@
                                 <p style="font-size: 24px;">權重(%)</p>
                             </div>
                             <div class="col">
-                                <input class="form-control w-100 shadow-none" :class="!weight ? 'alert-danger border-danger': ''" type="number" v-model="weight" min="1" max="100">
+                                <input class="form-control w-100 shadow-none" :class="!weight ? 'alert-danger border-danger': ''" type="number" v-model="weight" min="0" max="100">
                                 <span :style="weight ? 'visibility:hidden': ''" class="tooltiptext">*必需項目</span>
-                                <span :style="weight <= 100 && weight > 1 ? 'visibility:hidden': ''" class="tooltiptext"> 權重需大於1% 少於等於100%</span>
+                                <span :style="weight <= 100 && weight >= 1 ? 'visibility:hidden': ''" class="tooltiptext"> *權重需至少大於1% 少於等於100%</span>
                             </div>
                         </div>
                         <div class="row">
@@ -50,7 +50,7 @@
                                 :headers="headers"
                                 :items="groupList"
                                 v-model:items-selected="groupSelected"
-                                show-index  />
+                                show-index alternating />
                                 <span :style="groupSelected ? 'visibility:hidden': ''" class="tooltiptext">*必需項目</span>
                             </div>
                         </div>
@@ -66,6 +66,7 @@
                 </div>
             </div>
         </div>
+        <AlertBlock :message="message" @closeBlock="message=``" />
     </div>
 </template>
 
@@ -78,6 +79,7 @@
     const name = ref("")
     const weight = ref(0)
     const date = ref("")
+    const message = ref("")
     const groupSelected = ref([])
     const groupList = ref([])
     const headers = ref([
@@ -100,6 +102,24 @@
     })
 
     function saveAssignment() {
+        if (name.value == "") {
+            message.value = "未填作業名稱"
+            return
+        }
+        if (weight.value > 100 || weight.value < 1) {
+            message.value = "權重需大於1% 少於等於100%"
+            return
+        }
+        if (date.value == "") {
+            message.value = "未填截止繳交日期"
+            return
+        }
+
+        if (groupSelected.value == []) {
+            message.value = "至少選擇1組"
+            return
+        }
+
         for (const i of groupSelected.value) {
             newAssignment(projectUUID, i.groupUUID, name.value, weight.value, date.value)
         }

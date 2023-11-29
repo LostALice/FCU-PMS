@@ -9,7 +9,7 @@
                     <div class="col-md-6 text-md-end dataTables_filter mt-1">
                         <div class="btn-group" role="group">
                             <button class="btn btn-primary btn-sm d-none d-sm-inline-block shadow-none" role="button" @click="saveGroup">
-                                <i class="fas fa-save fa-sm text-white-50"></i> 保存
+                                <i class="fas fa-save fa-sm text-white-50"></i> 儲存
                             </button>
                         </div>
                     </div>
@@ -36,12 +36,14 @@
                             <div class="col text-center align-middle">
                                 <input type="text" class="form-control shadow-none" v-model="teacherSearchValue" placeholder="搜尋">
                             </div>
+                            <br>
                             <EasyDataTable
-                            :headers="Headers"
-                            :items="teacherItems"
-                            v-model:items-selected="teacherSelected"
-                            show-index
-                            :search-value="teacherSearchValue"
+                                :headers="Headers"
+                                :items="teacherItems"
+                                v-model:items-selected="teacherSelected"
+                                show-index
+                                :search-value="teacherSearchValue"
+                                alternating
                             >
                         </EasyDataTable>
                     </div>
@@ -52,11 +54,13 @@
                             <div class="col text-center align-middle">
                                 <input type="text" class="form-control shadow-none" v-model="teacherSelectSearchValue" placeholder="搜尋">
                             </div>
+                            <br>
                             <EasyDataTable
                                 :headers="Headers"
                                 :items="teacherSelected"
                                 show-index
-                                :search-value="teacherSelectSearchValue">
+                                :search-value="teacherSelectSearchValue"
+                                alternating>
                             </EasyDataTable>
                         </div>
                     </div>
@@ -64,7 +68,6 @@
                 <br>
                 <div>
                     <div class="row">
-
                         <div class="col">
                             <div class="col text-center align-middle">
                                 <p class="lead" style="font-size: 24px;">可選擇學生</p>
@@ -72,13 +75,14 @@
                             <div class="col text-center align-middle">
                                 <input type="text" class="form-control shadow-none" v-model="studentSearchValue" placeholder="搜尋">
                             </div>
+                            <br>
                             <EasyDataTable
                                 :headers="Headers"
                                 :items="studentItems"
                                 v-model:items-selected="studentSelected"
                                 show-index
                                 :search-value="studentSearchValue"
-                            >
+                                alternating>
                             </EasyDataTable>
                         </div>
 
@@ -89,18 +93,19 @@
                             <div class="col text-center align-middle">
                                 <input type="text" class="form-control shadow-none" v-model="studentSelectSearchValue" placeholder="搜尋">
                             </div>
+                            <br>
                             <EasyDataTable
                                 :headers="Headers"
                                 :items="studentSelected"
                                 show-index
-                                :search-value="studentSelectSearchValue">
+                                :search-value="studentSelectSearchValue" alternating>
                             </EasyDataTable>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <AlertBlock :message="message" />
+        <AlertBlock :message="message" @closeBlock="message=``" />
     </div>
 </template>
 

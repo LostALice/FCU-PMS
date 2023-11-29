@@ -44,7 +44,7 @@
                 </div>
             </div>
         </div>
-        <AlertBlock :message="message" />
+        <AlertBlock :message="message" @closeBlock="message=``" />
     </div>
 </template>
 
@@ -68,6 +68,7 @@
     })
 
     async function changePassword() {
+        // error checking
         if (newPassword.value != confirmPassword.value) {
             message.value = "密碼不一致"
             newPassword.value = ""
@@ -87,15 +88,14 @@
             return
         }
 
-        for (const i of [newPassword.value, confirmPassword.value]) {
-            if (i.length < 8) {
-                message.value = "密碼至少8個字元以上"
-                newPassword.value = ""
-                confirmPassword.value = ""
-                return
-            }
+        if (newPassword.value.length < 8 || confirmPassword.value.length < 8) {
+            message.value = "密碼至少8個字元以上"
+            newPassword.value = ""
+            confirmPassword.value = ""
+            return
         }
 
+        // hash password
         let newEncoder = new TextEncoder();
         const newData = newEncoder.encode(newPassword.value);
         const newHash = await crypto.subtle.digest("SHA-256", newData);
@@ -103,6 +103,13 @@
         const newHash_hex = newHash_array.map((b) => b.toString(16).padStart(2, "0")).join("");
         const newHash_password = newHash_hex;
 
-        await forceChangePassword(nid.value, newHash_password)
+        const success = await forceChangePassword(nid.value, newHash_password)
+
+        if (success["status_code"] == 200) {
+            message.value = "更改成功"
+        }
+        else {
+            message.value = success
+        }
     }
 </script>
