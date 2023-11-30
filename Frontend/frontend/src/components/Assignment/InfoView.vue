@@ -31,7 +31,7 @@
                             <p style="font-size: 24px;padding-left: 10px;">小組</p>
                         </div>
                         <div class="col">
-                            <p style="font-size: 24px;color: rgb(38,38,38);">{{ group }}<br></p>
+                            <router-link style="font-size: 24px;" :to="`/project/${projectUUID}/group/info/${assignmentUUID}`">{{ group }}</router-link>
                         </div>
                     </div>
 

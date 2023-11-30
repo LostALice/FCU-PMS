@@ -163,7 +163,7 @@ class AUTHENTICATION(SQLHandler):
                 return False
 
         if prompt in self.injection_keywords:
-            print("SQL injection Warning:",prompt, flush=True)
+            print("SQL injection Warning:", prompt, flush=True)
             return False
 
         return True
@@ -200,14 +200,16 @@ class AUTHENTICATION(SQLHandler):
 
         sha256.update(string.encode("utf8"))
         new_hashed_password = sha256.hexdigest()
+
         if not self.SQLInjectionCheck(nid=nid, JWT=hashed_password):
             return {
                 "authenticate": False
             }
 
         self.cursor.execute(
-            "SELECT * FROM login WHERE `NID` = %s and `PASSWORD` = %s;", (nid, new_hashed_password))
+            "SELECT * FROM login WHERE `NID` = %s and `PASSWORD` = %s", (nid, new_hashed_password))
 
+        print( (nid, new_hashed_password))
         if self.cursor.fetchall():
             token = self.generate_jwt_token(nid)
             self.cursor.execute(
@@ -219,12 +221,16 @@ class AUTHENTICATION(SQLHandler):
                 "x-access-token": token
             }
         else:
+            self.cursor.execute(
+                "UPDATE login SET `NID` = %s, `TOKEN` = %s WHERE `NID` = %s;", (nid, None, nid))
+            self.conn.commit()
             return {
                 "authenticate": False
             }
 
     def logout(self, nid: str, token: str) -> bool:
-        self.cursor.execute("UPDATE login WHERE NID = %s AND TOKEN = %s SET login.TOKEN = NULL", (nid, token))
+        self.cursor.execute(
+            "UPDATE login WHERE NID = %s AND TOKEN = %s SET login.TOKEN = NULL", (nid, token))
         self.conn.commit()
         return True
 

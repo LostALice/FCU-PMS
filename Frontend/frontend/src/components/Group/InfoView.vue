@@ -7,7 +7,7 @@
             <div class="card-body">
                 <div class="col">
                     <div class="row">
-                        <div class="col col-4 justify-content-center">
+                        <div class="col justify-content-center">
                             <p style="font-size: 24px;padding-left: 10px;">小組名稱</p>
                         </div>
                         <div class="col">
@@ -15,7 +15,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col col-4 justify-content-center">
+                        <div class="col justify-content-center">
                             <p style="font-size: 24px;padding-left: 10px;">教授人數</p>
                         </div>
                         <div class="col">
@@ -23,15 +23,17 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col col-4 justify-content-center">
+                        <div class="col justify-content-center">
                             <p style="font-size: 24px;padding-left: 10px;">教授</p>
                         </div>
                         <div class="col">
-                            <p style="font-size: 24px;color: rgb(38,38,38);">{{ teacher }}</p>
+                            <div v-for="(item, index) in teacher" :key="index">
+                                <router-link style="font-size: 24px;" :to="`/about/${item[1]}`">{{ item[0] }}</router-link>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col col-4 justify-content-center">
+                        <div class="col justify-content-center">
                             <p style="font-size: 24px;padding-left: 10px;">學生人數</p>
                         </div>
                         <div class="col">
@@ -39,11 +41,13 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col col-4 justify-content-center">
+                        <div class="col justify-content-center">
                             <p style="font-size: 24px;padding-left: 10px;">學生</p>
                         </div>
                         <div class="col">
-                            <p style="font-size: 24px;color: rgb(38,38,38);">{{ student }}</p>
+                            <div v-for="(item, index) in student" :key="index">
+                                <router-link style="font-size: 24px;" :to="`/about/${item[1]}`">{{ item[0] }}</router-link>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -62,10 +66,10 @@
     console.log(groupUUID)
 
     const name = ref("")
-    const teacher = ref("")
     const countTeacher = ref(0)
-    const student = ref("")
     const countStudent = ref(0)
+    const teacher = ref([])
+    const student = ref([])
 
     onMounted(async () => {
         const groupInfo =  await getGroupInfo(groupUUID)

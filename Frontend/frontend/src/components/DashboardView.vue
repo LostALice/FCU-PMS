@@ -104,7 +104,6 @@
         for (const i of project.data) {
             i["SUBMISSION_DATE"] = i["SUBMISSION_DATE"].replace("T", " ")
             projectList.value.push(i)
-            console.log(projectList.value)
         }
     })
 </script>

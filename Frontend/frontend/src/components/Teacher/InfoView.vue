@@ -11,7 +11,7 @@
                             <p style="font-size: 24px;padding-left: 10px;">NID</p>
                         </div>
                         <div class="col">
-                            <p style="font-size: 24px;color: rgb(38,38,38);">{{ teacherNID }}</p>
+                            <router-link style="font-size: 24px" :to="`/about/${teacherNID}`">{{ teacherNID }}</router-link>
                         </div>
                     </div>
                     <div class="row">

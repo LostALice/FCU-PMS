@@ -47,7 +47,6 @@
 
         nid.value = nid.value.toUpperCase()
         hashPassword.value = HashSHA256(password.value)
-
         const response = await verifyLogin(nid.value, hashPassword.value)
 
         if (!response["access"]) {

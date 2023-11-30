@@ -74,7 +74,6 @@ async def login(nid: str, password: str):
     func_name = stack()[0][3]
     if not access.permission_check(nid, func_name):
         return HTTPException(403, "Access denied")
-
     token = access.authenticate(nid, password)
     if token["authenticate"]:
         return {
@@ -112,7 +111,7 @@ async def logout(nid: str, token: str):
 
 
 @app.get("/getPermissionLevel/", status_code=200)
-async def getPermissionLevel(nid: str, token: str) -> int:
+async def getPermissionLevel(nid: str, token: str):
     """get user permission level
 
     Args:
@@ -1689,8 +1688,7 @@ def getGroupInfo(nid: str, token: str, groupUUID: str):
     for i in groupInfo:
         if groupInfo[i] == []:
             groupInfo[i] = "None"
-        if type(groupInfo[i]) == list:
-            groupInfo[i] = ", ".join(groupInfo[i])
+
 
     return groupInfo
 
@@ -1738,6 +1736,7 @@ def deleteGroup(nid: str, token: str, groupUUID: str, projectUUID: str):
         }
 
 # assignment
+
 
 @app.get("/getAssignment/", status_code=200)
 def getAssignment(nid: str, token: str, projectUUID: str):
@@ -2322,6 +2321,7 @@ def getDeadlineProject(nid: str, token: str):
 
 # about page
 
+
 @app.get("/getAboutPage/", status_code=200)
 def getAboutPage(nid: str, token: str, targetNID: str):
     """the information about the about page
@@ -2357,6 +2357,7 @@ def getAboutPage(nid: str, token: str, targetNID: str):
 
     user_info = SQLHandler().getAboutPage(targetNID)
     return user_info
+
 
 if __name__ == "__main__":
     # development only

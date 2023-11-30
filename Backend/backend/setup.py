@@ -84,7 +84,7 @@ class SettingSetupHandler(object):
                     "JWT_ALGORITHM": "HS256"
                 },
                 "CORS": {
-                    "ALLOW_ORIGINS": ["http://localhost:8080", "http://localhost"] + os.getenv("CORS_ALLOW_ORIGINS").split(",")
+                    "ALLOW_ORIGINS": ["http://localhost:8080", "http://localhost"] + os.getenv("CORS_ALLOW_ORIGINS").split(",") if os.getenv("CORS_ALLOW_ORIGINS").split(",") else ["http://localhost:8080", "http://localhost"]]
                 }
             }))
 

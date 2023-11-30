@@ -738,7 +738,8 @@ class SQLHandler:
 
         self.cursor.execute("""
             SELECT
-                login.USERNAME
+                login.USERNAME,
+                login.NID
             FROM
                 `group` AS gp
             JOIN
@@ -748,7 +749,7 @@ class SQLHandler:
             WHERE
                 gp.GID = %s AND gp.ENABLE = 1 AND login.NID LIKE "D%";""",
                             (groupUUID,))
-        info["student"] = [i[0] for i in self.cursor.fetchall()]
+        info["student"] = self.cursor.fetchall()
 
         self.cursor.execute("""
             SELECT
@@ -766,7 +767,8 @@ class SQLHandler:
 
         self.cursor.execute("""
             SELECT
-                login.USERNAME
+                login.USERNAME,
+                login.NID
             FROM
                 `group` AS gp
             JOIN
@@ -776,7 +778,7 @@ class SQLHandler:
             WHERE
                 gp.GID = %s AND gp.ENABLE = 1 AND login.NID LIKE "T%";""",
                             (groupUUID,))
-        info["teacher"] = [i[0] for i in self.cursor.fetchall()]
+        info["teacher"] = self.cursor.fetchall()
 
         self.cursor.execute("""
             SELECT
