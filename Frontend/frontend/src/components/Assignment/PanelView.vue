@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
-                    <EasyDataTable :headers="headers" :items="items" table-class-name="customize-table" show-index alternating>
+                    <EasyDataTable v-if="items" :headers="headers" :items="items" table-class-name="customize-table" show-index alternating>
                         <template #item-title="item">
                             <router-link :to="`${$route.path}/info/${item.assignmentUUID}`">{{ item.title }} </router-link>
                         </template>

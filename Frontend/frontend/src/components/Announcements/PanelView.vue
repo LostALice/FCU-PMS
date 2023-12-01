@@ -28,7 +28,7 @@
                         </div>
                     </div>
                 </div>
-                <EasyDataTable :headers="headers" :items="items" table-class-name="customize-table" show-index alternating>
+                <EasyDataTable v-if="items" :headers="headers" :items="items" table-class-name="customize-table" show-index alternating>
                     <template #item-title="item">
                         <router-link :to="`${$route.path}/info/${item.announcementUUID}`">{{ item.title }} </router-link>
                     </template>

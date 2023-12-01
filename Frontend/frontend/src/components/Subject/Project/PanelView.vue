@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
-                    <EasyDataTable :headers="headers" :items="items" :search-value="searchValue" show-index table-class-name="customize-table" alternating>
+                    <EasyDataTable v-if="items" :headers="headers" :items="items" :search-value="searchValue" show-index table-class-name="customize-table" alternating>
                         <template #item-name="item">
                             <router-link :to="`/project/info/${$router.currentRoute.value.params.subjectID}`">{{ item.name }}</router-link>
                         </template>
