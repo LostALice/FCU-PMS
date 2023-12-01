@@ -945,7 +945,7 @@ class SQLHandler:
             WHERE
                 file.TASK_ID = %s
                 AND file.FILE_ID = %s""",
-                            (params["taskUUID"], params["fileI  D"]))
+                            (params["taskUUID"], params["fileID"]))
         file_name = self.cursor.fetchone()[0]
         return file_name
 

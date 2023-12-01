@@ -84,7 +84,7 @@ class SettingSetupHandler(object):
                     "JWT_ALGORITHM": "HS256"
                 },
                 "CORS": {
-                    "ALLOW_ORIGINS": ["http://localhost:8080", "http://localhost"] + os.getenv("CORS_ALLOW_ORIGINS").split(",") if os.getenv("CORS_ALLOW_ORIGINS").split(",") else ["http://localhost:8080", "http://localhost"]]
+                    "ALLOW_ORIGINS": ["http://localhost:8080", "http://localhost"] + os.getenv("CORS_ALLOW_ORIGINS").split(",") if os.getenv("CORS_ALLOW_ORIGINS").split(",") else ["http://localhost:8080", "http://localhost"]
                 }
             }))
 
@@ -219,6 +219,7 @@ class SQLSetupHandler(object):
                 `NID` varchar(16) NOT NULL,
                 `USERNAME` varchar(255) NOT NULL,
                 `PASSWORD` varchar(255) NOT NULL,
+                `SALT` varchar(16) NOT NULL,
                 `EMAIL` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'example@example.com',
                 `LAST_LOGIN` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                 `ICON` varchar(255) NOT NULL DEFAULT 'default.png',

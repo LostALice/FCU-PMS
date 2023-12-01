@@ -1987,7 +1987,7 @@ def deleteAssignmentItem(nid: str, token: str, taskUUID: str, fileUUID: str, aut
         }
 
 
-@app.post("/markAssignmentScore", status_code=200)
+@app.post("/markAssignmentScore/", status_code=200)
 def markAssignmentScore(nid: str, token: str, projectUUID: str, taskUUID: str, marks: int):
     """mark assignment score
 

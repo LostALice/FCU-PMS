@@ -4,6 +4,8 @@ from permission import PERMISSION
 from handler import SQLHandler
 
 import hashlib
+import random
+import string
 import time
 import jwt
 import re
@@ -176,11 +178,17 @@ class AUTHENTICATION(SQLHandler):
             password (str): password
 
         Returns:
-            salted_password: [str] NID(salt) + password(sha256 string) =sha256=> salted password
+            salted_password: [str] random generated string(salt) + password(sha256 string) =sha256=> salted password
         """
         sha256 = hashlib.sha256()
-        string = password + nid
-        sha256.update(string.encode("utf8"))
+
+        salt = "".join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(4))
+
+        self.cursor.execute("UPDATE login SET login.SALT = %s WHERE login.NID = %s", (salt, nid))
+        self.conn.commit()
+
+        salted_string = password + salt
+        sha256.update(salted_string.encode("utf8"))
         return sha256.hexdigest()
 
     def authenticate(self, nid: str, hashed_password: str) -> dict[str, bool]:
@@ -195,10 +203,14 @@ class AUTHENTICATION(SQLHandler):
             x-access-token: [str] jwt token
             authenticate: [bool] True if enter the correct password
         """
-        sha256 = hashlib.sha256()
-        string = hashed_password + nid
 
-        sha256.update(string.encode("utf8"))
+        sha256 = hashlib.sha256()
+        self.cursor.execute("SELECT login.SALT FROM login WHERE login.NID = %s", (nid,))
+        salt = self.cursor.fetchall()[0][0]
+
+        salted_string = hashed_password + salt
+
+        sha256.update(salted_string.encode("utf8"))
         new_hashed_password = sha256.hexdigest()
 
         if not self.SQLInjectionCheck(nid=nid, JWT=hashed_password):
@@ -209,7 +221,6 @@ class AUTHENTICATION(SQLHandler):
         self.cursor.execute(
             "SELECT * FROM login WHERE `NID` = %s and `PASSWORD` = %s", (nid, new_hashed_password))
 
-        print( (nid, new_hashed_password))
         if self.cursor.fetchall():
             token = self.generate_jwt_token(nid)
             self.cursor.execute(
@@ -364,6 +375,7 @@ class AUTHENTICATION(SQLHandler):
         """
 
         new_password = self.add_salt(nid, password)
+
         self.cursor.execute("""
             UPDATE
                 login

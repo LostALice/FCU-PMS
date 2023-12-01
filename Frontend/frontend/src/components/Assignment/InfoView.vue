@@ -31,7 +31,7 @@
                             <p style="font-size: 24px;padding-left: 10px;">小組</p>
                         </div>
                         <div class="col">
-                            <router-link style="font-size: 24px;" :to="`/project/${projectUUID}/group/info/${assignmentUUID}`">{{ group }}</router-link>
+                            <p style="font-size: 24px;color: rgb(38,38,38);">{{ group }}</p>
                         </div>
                     </div>
 
@@ -151,7 +151,7 @@
     })
 
     function markScore() {
-        const marks = parseInt(prompt("分數","1-100"))
+        const marks = parseInt(prompt("分數","0-100"))
         if (!marks) {
             MessageChannel.value = "輸入錯誤"
             markScore()

@@ -114,8 +114,7 @@
             message.value = "未填截止繳交日期"
             return
         }
-
-        if (groupSelected.value == []) {
+        if (groupSelected.value.length == 0) {
             message.value = "至少選擇1組"
             return
         }

@@ -79,7 +79,7 @@
 
     const headers = [
         {
-            text: "項目名稱",
+            text: "項目",
             value: "PROJECT_NAME",
             sortable: true
         },
