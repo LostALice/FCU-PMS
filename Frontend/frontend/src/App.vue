@@ -50,9 +50,15 @@
                                         <img class="border rounded-circle img-profile" :src="imageURL">
                                     </a>
                                     <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
-                                        <router-link class="dropdown-item" to="/profile">
+                                        <router-link class="dropdown-item" :to="`/about/${nid}`">
                                             <i class="fas fa-user fa-sm fa-fw me-2 text-gray-400">
                                             </i>個人資料
+                                        </router-link>
+                                        <div class="dropdown-divider">
+                                        </div>
+                                        <router-link class="dropdown-item" to="/profile">
+                                            <i class="fa fa-cog fa-sm fa-fw me-2 text-gray-400">
+                                            </i>資料設定
                                         </router-link>
                                         <div class="dropdown-divider">
                                         </div>

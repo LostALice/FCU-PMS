@@ -51,9 +51,10 @@
 </template>
 
 <script setup>
-    import { getSubject, deleteSubject } from "@/assets/js/helper.js"
-    import { ref, onMounted } from "vue";
-    import "vue3-easy-data-table";
+    import { deleteSubject } from "@/assets/js/helper.js"
+    import { getSubject } from "@/assets/js/helper.js"
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const permissionLevel = ref(localStorage["permissionLevel"])
     const searchValue = ref("");

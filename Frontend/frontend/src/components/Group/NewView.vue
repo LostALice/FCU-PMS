@@ -110,10 +110,13 @@
 </template>
 
 <script setup>
-    import { getGroupTeacherData, getGroupStudentData, newGroup, getGroupToken } from "@/assets/js/helper.js"
+    import { getGroupTeacherData } from "@/assets/js/helper.js"
+    import { getGroupStudentData } from "@/assets/js/helper.js"
+    import { getGroupToken } from "@/assets/js/helper.js"
+    import { newGroup } from "@/assets/js/helper.js"
     import { useRouter } from "vue-router"
-    import { ref, onMounted } from "vue"
-    import "vue3-easy-data-table"
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const router = useRouter()
     const projectUUID = router.currentRoute.value.params.projectID

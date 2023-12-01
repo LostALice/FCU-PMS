@@ -64,10 +64,11 @@
 </template>
 
 <script setup>
-    import { getProject, deleteProject } from "@/assets/js/helper.js"
+    import { deleteProject } from "@/assets/js/helper.js"
+    import { getProject } from "@/assets/js/helper.js"
     import { useRouter } from "vue-router"
-    import "vue3-easy-data-table";
-    import { ref, onMounted } from "vue";
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const permissionLevel = ref(localStorage["permissionLevel"])
     const searchValue = ref("");

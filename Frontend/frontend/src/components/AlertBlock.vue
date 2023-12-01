@@ -9,7 +9,9 @@
 </template>
 
 <script setup>
-    import { ref, onUpdated } from "vue";
+    import { onUpdated } from "vue"
+    import { ref } from "vue"
+
     let props = defineProps({
         message: String
     })
@@ -19,7 +21,7 @@
 
     onUpdated(() => {
         AlertMessage.value = props.message
-        console.log(AlertMessage.value)
+        console.error(AlertMessage.value)
         setTimeout(() => {
             emit("closeBlock")
         }, 3000)

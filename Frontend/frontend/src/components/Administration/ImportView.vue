@@ -2,7 +2,7 @@
     <div>
         <div class="card shadow">
             <div class="card-header py-3">
-                <p class="text-primary m-0 fw-bold" style="font-size: 28px;">{{$route.name}}</p>
+                <p class="text-primary m-0 fw-bold" style="font-size: 28px">{{$route.name}}</p>
             </div>
             <div class="card-body mh-100">
                 <div class="alert alert-success" role="alert"><span><strong>從Excel導入前請仔細閱讀說明</strong><br></span></div>
@@ -46,7 +46,7 @@
                         </div>
                         <form>
                             <div class="row">
-                                <div class="col" style="text-align: right;">
+                                <div class="col" style="text-align: right">
                                     <input
                                         class="form-control shadow-none"
                                         type="file"
@@ -74,9 +74,11 @@
 </template>
 
 <script setup>
-    import { importUser, getPermissionLevel } from "@/assets/js/helper.js"
+    import { getPermissionLevel } from "@/assets/js/helper.js"
+    import { importUser } from "@/assets/js/helper.js"
     import { useRouter } from "vue-router"
-    import { ref, onMounted } from "vue"
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const router = useRouter()
     const message = ref("")

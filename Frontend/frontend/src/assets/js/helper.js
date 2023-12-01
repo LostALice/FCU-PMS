@@ -657,7 +657,7 @@ export async function markAssignmentScore(taskUUID, projectUUID, marks) {
     return resp.data
 }
 
-export async function newAssignment(projectUUID, gid, name, weight, date) {
+export async function newAssignment(projectUUID, gid, name, weight, date, allowedFileTypes) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
@@ -670,6 +670,7 @@ export async function newAssignment(projectUUID, gid, name, weight, date) {
             "name": name,
             "weight": weight,
             "date": date,
+            "allowedFileTypes": allowedFileTypes
         }
     })
     return resp.data
@@ -744,6 +745,20 @@ export async function changeIcon(file_, filename) {
     return resp.data
 }
 
+export async function changeEmail(newEmail) {
+    const nid = localStorage["nid"]
+    const token = localStorage["token"]
+
+    const resp = await axios.post("/changeEmail/", null, {
+        params: {
+            "nid": nid,
+            "token": token,
+            "newEmail": newEmail
+        }
+    })
+
+    return resp.data
+}
 // dashboard
 export async function getDeadlineProject() {
     const nid = localStorage["nid"]

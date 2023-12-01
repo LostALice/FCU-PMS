@@ -27,8 +27,9 @@
 
 <script setup>
     import { getAnnouncementInfo } from "@/assets/js/helper.js"
-    import { useRouter } from "vue-router";
-    import { ref, onMounted } from "vue"
+    import { useRouter } from "vue-router"
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const title = ref("")
     const date = ref("")

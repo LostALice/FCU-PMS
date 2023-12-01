@@ -91,7 +91,6 @@ class SQLHandler:
 
     # subject
 
-
     @sql_term
     def getSubjectData(self, nid: str) -> dict:
         self.cursor.execute("""
@@ -529,8 +528,7 @@ class SQLHandler:
     @sql_term
     def deleteStudent(self, params: dict = {}) -> bool:
         self.cursor.execute("""
-            DELETE
-            FROM
+            DELETE FROM
                 student
             WHERE
                 student.NID = %s AND student.PROJECT_ID = %s;""",
@@ -594,7 +592,7 @@ class SQLHandler:
                             (params["projectUUID"], params["nid"], params["nid"]))
         self.conn.commit()
         self.cursor.execute("""
-            INSERT INTO member (
+            INSERT IGNORE INTO member (
                 member.PROJECT_ID,
                 member.NID
             )
@@ -608,8 +606,7 @@ class SQLHandler:
     @sql_term
     def deleteTeacher(self, params: dict = {}) -> bool:
         self.cursor.execute("""
-            DELETE
-            FROM
+            DELETE FROM
                 teacher
             WHERE
                 teacher.NID = %s AND teacher.PROJECT_ID = %s;""",
@@ -883,7 +880,8 @@ class SQLHandler:
                 gp.NAME,
                 assignment.MARK,
                 assignment.WEIGHT,
-                assignment.SUBMISSION_DATE
+                assignment.SUBMISSION_DATE,
+                assignment.ALLOWED_FORMATS
             FROM
                 assignment
             JOIN
@@ -902,6 +900,7 @@ class SQLHandler:
             "mark": info[2],
             "weight": info[3],
             "date": info[4],
+            "allowedFileTypes": info[5],
         }
 
         self.cursor.execute("""
@@ -1004,10 +1003,11 @@ class SQLHandler:
                     assignment.GID,
                     assignment.UPLOADER,
                     assignment.WEIGHT,
-                    assignment.MARK
+                    assignment.MARK,
+                    assignment.ALLOWED_FORMATS
                 )
             VALUES
-                (%s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
                             (
                                 params["task_id"],
                                 params["projectUUID"],
@@ -1018,6 +1018,7 @@ class SQLHandler:
                                 params["uploader"],
                                 params["weight"],
                                 params["mark"],
+                                params["allowedFileTypes"],
                             ))
         self.conn.commit()
         return True
@@ -1067,6 +1068,8 @@ class SQLHandler:
         icon_name = f"{nid}/{icon_name}"
         return icon_name
 
+    # profile
+
     @sql_term
     def changeIcon(self, params: dict) -> bool:
         self.cursor.execute("""
@@ -1077,6 +1080,18 @@ class SQLHandler:
             WHERE
                 login.NID = %s""",
                             (params["filename"], params["nid"]))
+        self.conn.commit()
+        return True
+
+    @sql_term
+    def changeEmail(self, params: dict) -> bool:
+        self.cursor.execute("""
+            UPDATE
+                login
+            SET
+                login.EMAIL = %s
+            WHERE
+                login.NID = %s""", (params["new_email"], params["nid"]))
         self.conn.commit()
         return True
 
@@ -1135,7 +1150,6 @@ class SQLHandler:
                     login.NID = %s;""", (target_nid, ))
 
         return c.fetchall()
-
 
     @sql_term
     def getPermission(self, nid: str) -> int:

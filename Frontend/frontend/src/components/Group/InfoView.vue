@@ -57,9 +57,10 @@
 </template>
 
 <script setup>
-    import { useRouter } from "vue-router";
-    import { ref, onMounted } from "vue"
     import { getGroupInfo } from "@/assets/js/helper.js"
+    import { useRouter } from "vue-router"
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const router = useRouter()
     const groupUUID = router.currentRoute.value.params.groupID

@@ -35,7 +35,7 @@
 
 <script setup>
     import { createProject } from "@/assets/js/helper.js"
-    import { useRouter } from "vue-router";
+    import { useRouter } from "vue-router"
     import { ref } from "vue"
 
     const projectName = ref("")

@@ -14,19 +14,13 @@ import re
 class AUTHENTICATION(SQLHandler):
     def __init__(self) -> None:
         self.sql_init()
-        self.injection_keywords = ["'",
-                                   '"',
-                                   '#',
-                                   '-',
-                                   '--',
+        self.injection_keywords = ['--',
                                    "'%20--",
                                    "--';",
                                    "'%20;",
                                    "=%20'",
                                    '=%20;',
                                    '=%20--',
-                                   '#',
-                                   "'",
                                    "=%20;'",
                                    "=%20'",
                                    "'OR SELECT *",
@@ -116,7 +110,6 @@ class AUTHENTICATION(SQLHandler):
                                    '&apos;%20OR',
                                    "'sqlattempt1",
                                    '(sqlattempt2)',
-                                   '|',
                                    '%7C',
                                    '*|',
                                    '%2A%7C',
@@ -124,9 +117,7 @@ class AUTHENTICATION(SQLHandler):
                                    '%2A%28%7C%28mail%3D%2A%29%29',
                                    '*(|(objectclass=*))',
                                    '%2A%28%7C%28objectclass%3D%2A%29%29',
-                                   '(',
                                    '%28',
-                                   ')',
                                    '%29',
                                    '&',
                                    '%26',
@@ -156,7 +147,12 @@ class AUTHENTICATION(SQLHandler):
             bool: True = pass, False = Error
         """
         if nid:
-            return True if re.match(r"^[dtDT]\d{7}$", nid) else False
+            if len(nid) > 8:
+                print("SQL injection Warning:", nid, flush=True)
+                return False
+
+            match = True if re.match(r"^[dtDT]\d{7}$", nid) else False
+            return match
 
         if JWT:
             try:
@@ -207,6 +203,11 @@ class AUTHENTICATION(SQLHandler):
             authenticate: [bool] True if enter the correct password
         """
 
+        if not self.SQLInjectionCheck(nid=nid, JWT=hashed_password):
+            return {
+                "authenticate": False
+            }
+
         sha256 = hashlib.sha256()
         self.cursor.execute("SELECT login.SALT FROM login WHERE login.NID = %s", (nid,))
         salt = self.cursor.fetchall()[0][0]
@@ -216,10 +217,6 @@ class AUTHENTICATION(SQLHandler):
         sha256.update(salted_string.encode("utf8"))
         new_hashed_password = sha256.hexdigest()
 
-        if not self.SQLInjectionCheck(nid=nid, JWT=hashed_password):
-            return {
-                "authenticate": False
-            }
 
         self.cursor.execute(
             "SELECT * FROM login WHERE `NID` = %s and `PASSWORD` = %s", (nid, new_hashed_password))
@@ -227,7 +224,7 @@ class AUTHENTICATION(SQLHandler):
         if self.cursor.fetchall():
             token = self.generate_jwt_token(nid)
             self.cursor.execute(
-                "UPDATE login SET `NID` = %s, `TOKEN` = %s WHERE `NID` = %s;", (nid, token, nid))
+                "UPDATE login SET `NID` = %s, `TOKEN` = %s,`LAST_LOGIN` = CURRENT_TIMESTAMP WHERE `NID` = %s;", (nid, token, nid))
             self.conn.commit()
             self.conn.close()
             return {

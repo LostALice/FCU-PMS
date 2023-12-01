@@ -28,17 +28,18 @@
 </template>
 
 <script setup>
-    import { getLog, getPermissionLevel } from "@/assets/js/helper.js";
+    import { getPermissionLevel } from "@/assets/js/helper.js"
+    import { getLog } from "@/assets/js/helper.js"
     import { useRouter } from "vue-router"
-    import { ref, onMounted } from "vue";
-    import "vue3-easy-data-table";
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const router = useRouter()
 
     const searchValue = ref("")
     const items = ref([])
-    const sortBy = "timestamp";
-    const sortType = "desc";
+    const sortBy = "timestamp"
+    const sortType = "desc"
     const message = ref("")
 
     const headers = [

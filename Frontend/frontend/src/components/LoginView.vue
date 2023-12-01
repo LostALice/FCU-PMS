@@ -24,9 +24,14 @@
 </template>
 
 <script setup>
-    import { getJWTToken, getPermissionLevel, HashSHA256, JWTValidate, verifyLogin } from "@/assets/js/helper.js"
+    import { getPermissionLevel } from "@/assets/js/helper.js"
+    import { getJWTToken } from "@/assets/js/helper.js"
+    import { JWTValidate } from "@/assets/js/helper.js"
+    import { verifyLogin } from "@/assets/js/helper.js"
+    import { HashSHA256 } from "@/assets/js/helper.js"
     import { useRouter } from "vue-router"
-    import { ref, onMounted } from "vue"
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const hashPassword = ref("")
     const password = ref("")
@@ -70,7 +75,7 @@
             const JWTValidation = await JWTValidate()
 
             if (JWTValidation.access){
-                router.replace("/dashboard")
+                router.go(-1)
             }
             else {
                 localStorage["nid"] = null

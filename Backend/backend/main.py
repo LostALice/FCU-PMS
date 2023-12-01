@@ -466,7 +466,7 @@ def createSubject(
         }
 
 
-@app.delete("/deleteSubject", status_code=200)
+@app.delete("/deleteSubject/", status_code=200)
 def deleteSubject(nid: str, token: str, subjectUUID: str):
     """delete a subject
 
@@ -579,7 +579,7 @@ def getProject(nid: str, token: str, subjectUUID: str):
         }
 
 
-@app.post("/createProject", status_code=200)
+@app.post("/createProject/", status_code=200)
 def createProject(nid: str, token: str, subjectUUID: str, projectName: str):
     """Create a new project from a subject
 
@@ -810,7 +810,7 @@ def getStudentList(nid: str, token: str, projectUUID: str):
         }
 
 
-@app.post("/newStudent", status_code=200)
+@app.post("/newStudent/", status_code=200)
 def newStudent(nid: str, token: str, projectUUID: str, studentNID: str):
     """add new student to project
 
@@ -936,7 +936,7 @@ def getStudentInfo(nid: str, token: str, studentNID: str):
         }
 
 
-@app.post("/importStudent", status_code=200)
+@app.post("/importStudent/", status_code=200)
 def importStudent(nid: str, token: str, projectUUID: str, file_: UploadFile):
     """import student data from xlsx file
 
@@ -1081,7 +1081,7 @@ def getTeacherList(nid: str, token: str, projectUUID):
         }
 
 
-@app.post("/newTeacher", status_code=200)
+@app.post("/newTeacher/", status_code=200)
 def newTeacher(nid: str, token: str, projectUUID: str, teacherNID: str):
     """add new teacher to project
 
@@ -1209,7 +1209,7 @@ def getTeacherInfo(nid: str, token: str, teacherNID: str):
         }
 
 
-@app.post("/importTeacher", status_code=200)
+@app.post("/importTeacher/", status_code=200)
 def importTeacher(nid: str, token: str, projectUUID: str, file_: UploadFile):
     """import teacher from xlsx file
 
@@ -1312,7 +1312,7 @@ def getAnnouncementData(nid: str, token: str, projectUUID: str):
         }
 
 
-@app.post("/createAnnouncement", status_code=200)
+@app.post("/createAnnouncement/", status_code=200)
 def createAnnouncement(nid: str, token: str, projectUUID: str, title: str, context: str):
     """create a new announcement
 
@@ -1845,7 +1845,7 @@ def downloadAssignment(
     return FileResponse(path=file_path)
 
 
-@app.post("/uploadAssignment", status_code=200)
+@app.post("/uploadAssignment/", status_code=200)
 def uploadAssignment(
         nid: str,
         token: str,
@@ -2044,7 +2044,7 @@ def markAssignmentScore(nid: str, token: str, projectUUID: str, taskUUID: str, m
         }
 
 
-@app.post("/newAssignment", status_code=200)
+@app.post("/newAssignment/", status_code=200)
 def newAssignment(
         nid: str,
         token: str,
@@ -2052,7 +2052,8 @@ def newAssignment(
         gid: str,
         name: str,
         weight: int,
-        date: str):
+        date: str,
+        allowedFileTypes: str):
     """create a new assignment
 
     Args:
@@ -2063,9 +2064,10 @@ def newAssignment(
         name (str): name of the assignment
         weight (int): the percentage of the assignment
         date (str): the deadline of the assignment
+        allowedFileTypes (str): allowed file's types
 
     Returns:
-        : _description_
+        status_code: [int] status code
     """
 
     access = AUTHENTICATION()
@@ -2093,7 +2095,8 @@ def newAssignment(
         "gid": gid,
         "uploader": nid,
         "weight": weight,
-        "mark": 0
+        "mark": 0,
+        "allowedFileTypes": allowedFileTypes
     }
 
     if SQLHandler().newAssignment(params):
@@ -2129,6 +2132,7 @@ def getAssignmentInfo(nid: str, token: str, assignmentUUID: str, projectUUID: st
                 "filename": [str] name of the assignment file
                 "author": [str] assignment author
                 "date": [datetime] date of submission
+                "allowedFileTypes": [str] allowed file's types
             ]
         ]
     """
@@ -2163,11 +2167,51 @@ def getAssignmentInfo(nid: str, token: str, assignmentUUID: str, projectUUID: st
         }
 
 # profile
+@app.post("/changeEmail/", status_code=200)
+async def changeEmail(nid: str, token: str, newEmail: str):
+    """api of for user to change email
+
+    Args:
+        nid (str): NID
+        token (str): jwt
+        newEmail (str): user's new email
+
+    Returns:
+        status_code: [int] status code
+    """
+    access = AUTHENTICATION()
+    func_name = stack()[0][3]
+    if not access.permission_check(nid, func_name):
+        return HTTPException(403, "Access denied")
+
+    token_validation = access.verify_jwt_token(nid, token)
+    if not token_validation:
+        return HTTPException(status_code=403, detail="Token invalid")
+
+    if not AUTHENTICATION().SQLInjectionCheck(prompt=newEmail):
+        return {
+            "SQLInjectionCheck": False,
+            "status_code": 400
+        }
+
+    params = {
+        "nid": nid,
+        "new_email": newEmail
+    }
+
+    if SQLHandler().changeEmail(params):
+        return {
+            "status_code": 200
+        }
+    else:
+        return {
+            "status_code": 400
+        }
 
 
-@app.post("/changePassword", status_code=200)
+@app.post("/changePassword/", status_code=200)
 async def changePassword(nid: str, token: str, oldPassword: str, newPassword: str):
-    """api of change password for user
+    """api of for user to change password
 
     Args:
         nid (str): NID
@@ -2228,7 +2272,7 @@ async def getIconImages(nid: str) -> FileResponse:
     return FileResponse(f"./icon/{icon_file_name}")
 
 
-@app.post("/changeIcon", status_code=200)
+@app.post("/changeIcon/", status_code=200)
 async def changeIcon(nid: str, token: str, file_: UploadFile, filename: str):
     """api of changing the icon image for user
 

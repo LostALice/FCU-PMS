@@ -31,7 +31,7 @@
 
 <script setup>
     import { getAboutPage } from "@/assets/js/helper.js"
-    import { useRouter } from "vue-router";
+    import { useRouter } from "vue-router"
     import { ref, onMounted } from "vue"
 
     const router = useRouter()

@@ -16,7 +16,7 @@
                                 <p style="font-size: 24px;">作業文件</p>
                             </div>
                             <div class="col">
-                                <input class="form-control shadow-none" type="file" @change="onFileSelected" multiple>
+                                <input class="form-control shadow-none" type="file" @change="onFileSelected" multiple :accept="allowedFormat">
                             </div>
                         </div>
                     </div>
@@ -51,10 +51,16 @@
 </template>
 
 <script setup>
-    import { uploadAssignment } from "@/assets/js/helper.js";
-    import { useRouter } from "vue-router";
-    import "vue3-easy-data-table"
+    import { uploadAssignment } from "@/assets/js/helper.js"
+    import { useRouter } from "vue-router"
     import { ref } from "vue"
+
+    let props = defineProps({
+        allowedFileTypes: String
+    })
+
+    const allowedFormat = ref(props.allowedFileTypes)
+    console.log(props.allowedFileTypes)
 
     const fileList = ref([])
     const headers = ref([

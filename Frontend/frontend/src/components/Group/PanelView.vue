@@ -55,16 +55,17 @@
 </script>
 
 <script setup>
-    import { getGroupData, deleteGroup } from "@/assets/js/helper.js";
-    import { ref, onMounted } from "vue"
-    import "vue3-easy-data-table";
-    import { useRouter } from "vue-router";
+    import { getGroupData } from "@/assets/js/helper.js"
+    import { deleteGroup } from "@/assets/js/helper.js"
+    import { useRouter } from "vue-router"
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const router = useRouter()
     const projectUUID = router.currentRoute.value.params.projectID
     const permissionLevel = ref(localStorage["permissionLevel"])
-    const items = ref([])
     const message = ref("")
+    const items = ref([])
 
     const headers = [
         {

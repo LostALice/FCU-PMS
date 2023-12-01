@@ -51,10 +51,11 @@
 </template>
 
 <script setup>
-    import { getAssignment, deleteAssignment } from "@/assets/js/helper.js"
+    import { deleteAssignment } from "@/assets/js/helper.js"
+    import { getAssignment } from "@/assets/js/helper.js"
     import { useRouter } from "vue-router"
-    import { ref, onMounted } from "vue"
-    import "vue3-easy-data-table";
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const router = useRouter()
     const projectUUID = router.currentRoute.value.params.projectID

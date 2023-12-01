@@ -49,9 +49,11 @@
 </template>
 
 <script setup>
-    import { forceChangePassword, getPermissionLevel } from "@/assets/js/helper.js"
+    import { forceChangePassword } from "@/assets/js/helper.js"
+    import { getPermissionLevel } from "@/assets/js/helper.js"
     import { useRouter } from "vue-router"
-    import { ref, onMounted } from "vue"
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const router = useRouter()
 

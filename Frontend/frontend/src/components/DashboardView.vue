@@ -72,8 +72,8 @@
 
 <script setup>
     import { getDeadlineProject } from "@/assets/js/helper.js"
-    import { ref, onMounted } from "vue"
-    import "vue3-easy-data-table";
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const projectList = ref([])
 

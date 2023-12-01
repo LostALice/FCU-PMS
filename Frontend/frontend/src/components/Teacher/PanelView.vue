@@ -29,7 +29,7 @@
                     </div>
                 </div>
 
-                <EasyDataTable :headers="headers" :items="items" :search-value="searchValue" table-class-name="customize-table" show-index alternating>
+                <EasyDataTable v-if="items" :headers="headers" :items="items" :search-value="searchValue" table-class-name="customize-table" show-index alternating>
                     <template #item-nid="item">
                         <router-link :to="`${$route.path}/info/${item.nid}`">{{ item.nid }}</router-link>
                         <a href="/"></a>
@@ -49,10 +49,11 @@
 </template>
 
 <script setup>
-    import { getTeacherData, deleteTeacher } from "@/assets/js/helper.js";
+    import { getTeacherData } from "@/assets/js/helper.js"
+    import { deleteTeacher } from "@/assets/js/helper.js"
     import { useRouter } from "vue-router"
-    import { ref, onMounted } from "vue";
-    import "vue3-easy-data-table";
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const permissionLevel = ref(localStorage["permissionLevel"])
     const searchValue = ref("")

@@ -28,6 +28,7 @@ class SettingSetupHandler(object):
                     "changePassword": 0,
                     "getIconImages": 0,
                     "changeIcon": 0,
+                    "changeEmail": 0,
                     "getDeadlineProject": 0,
                     "getAboutPage": 0,
                     "getSubject": 1,
@@ -178,6 +179,7 @@ class SQLSetupHandler(object):
                 `WEIGHT` int NOT NULL,
                 `MARK` int NOT NULL,
                 `ENABLE` tinyint NOT NULL DEFAULT '1',
+                `ALLOWED_FORMATS` varchar(255) NOT NULL DEFAULT '*',
                 PRIMARY KEY (`TASK_ID`,`PROJECT_ID`)
             )
             ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci"""

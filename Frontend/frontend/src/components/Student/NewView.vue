@@ -67,10 +67,11 @@
 </template>
 
 <script setup>
-    import { getStudentList, newStudent } from "@/assets/js/helper.js"
+    import { getStudentList} from "@/assets/js/helper.js"
+    import { newStudent } from "@/assets/js/helper.js"
     import { useRouter } from "vue-router"
-    import { ref, onMounted } from "vue"
-    import "vue3-easy-data-table"
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const router = useRouter()
     const projectUUID = useRouter().currentRoute.value.params.projectID

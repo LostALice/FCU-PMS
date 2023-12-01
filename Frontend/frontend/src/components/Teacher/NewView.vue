@@ -69,10 +69,11 @@
 </template>
 
 <script setup>
-    import { getTeacherList, newTeacher } from "@/assets/js/helper.js"
-    import { useRouter } from "vue-router";
-    import { ref, onMounted } from "vue"
-    import "vue3-easy-data-table";
+    import { getTeacherList } from "@/assets/js/helper.js"
+    import { newTeacher } from "@/assets/js/helper.js"
+    import { useRouter } from "vue-router"
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const router = useRouter()
     const projectUUID = useRouter().currentRoute.value.params.projectID
