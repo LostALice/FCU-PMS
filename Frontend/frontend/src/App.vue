@@ -123,6 +123,8 @@
     import { useRouter } from "vue-router"
     import { watch, ref } from "vue"
 
+    console.info("asd")
+
     const nid = ref(localStorage["nid"])
     const FixedTop = ref(false)
     const imageURL = ref("")

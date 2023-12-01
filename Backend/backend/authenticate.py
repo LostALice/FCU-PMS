@@ -178,7 +178,10 @@ class AUTHENTICATION(SQLHandler):
             password (str): password
 
         Returns:
-            salted_password: [str] random generated string(salt) + password(sha256 string) =sha256=> salted password
+            salted_string: [tuple] (
+                salted_password: [str] a salt password
+                salt: [str] a salt string
+            )
         """
         sha256 = hashlib.sha256()
 

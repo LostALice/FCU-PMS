@@ -32,11 +32,13 @@ with open("./setting.json", "r") as f:
 app = FastAPI(debug=DEBUG)
 
 # CORS config
-# i dont care about the cors attack. yes indeed, none of my business
 ALLOW_ORIGINS = json_file["CORS"]["ALLOW_ORIGINS"]
+ALLOW_ORIGINS_REGEX = json_file["CORS"]["ALLOW_ORIGINS_REGEX"]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOW_ORIGINS,
+    allow_origin_regex=ALLOW_ORIGINS_REGEX,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -2371,5 +2373,5 @@ def getAboutPage(nid: str, token: str, targetNID: str):
 
 if __name__ == "__main__":
     # development only
-    # uvicorn main:app --reload
+    # uvicorn main:app --reload --host 0.0.0.0
     app.run(debug=DEBUG)

@@ -84,7 +84,15 @@ class SettingSetupHandler(object):
                     "JWT_ALGORITHM": "HS256"
                 },
                 "CORS": {
-                    "ALLOW_ORIGINS": ["http://localhost:8080", "http://localhost"] + os.getenv("CORS_ALLOW_ORIGINS").split(",") if os.getenv("CORS_ALLOW_ORIGINS").split(",") else ["http://localhost:8080", "http://localhost"]
+                    "ALLOW_ORIGINS": [
+                        "http://localhost:8080",
+                        "http://localhost",
+                    ] + os.getenv("CORS_ALLOW_ORIGINS").split(",") if os.getenv("CORS_ALLOW_ORIGINS").split(",") else [
+                        "http://localhost:8080",
+                        "http://localhost",
+                    ],
+                    # local development origins accept 192.168.*.*:*
+                    "ALLOW_ORIGINS_REGEX": os.getenv("ALLOW_ORIGINS_REGEX") if os.getenv("ALLOW_ORIGINS_REGEX") else "^(http:\/\/192.168\\.(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.)([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))(:([0-9]|[1-9][0-9]|[1-9][0-9]{2}|[1-9][0-9]{3}|[1-5][0-9]{4}|6([0-4][0-9]{3}|5([0-4][0-9]{2}|5([0-2][0-9]|3[0-5])))))?$"
                 }
             }))
 

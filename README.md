@@ -1,6 +1,6 @@
-# Feng Chia University Project Management System (PMS)
+# Feng Chia University iSchool Project Management System (PMS)
 
-# 逢甲大學專題管理系統
+# 逢甲大學創能學院專題管理系統
 
 # [***Demo Website***](https://pms.tyrantrex.icu)
 
