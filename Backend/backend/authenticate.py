@@ -189,7 +189,7 @@ class AUTHENTICATION(SQLHandler):
 
         salted_string = password + salt
         sha256.update(salted_string.encode("utf8"))
-        return sha256.hexdigest()
+        return sha256.hexdigest(), salt
 
     def authenticate(self, nid: str, hashed_password: str) -> dict[str, bool]:
         """return a hashed and salted password
@@ -270,7 +270,7 @@ class AUTHENTICATION(SQLHandler):
         if not self.cursor.fetchall():
             return False
 
-        new_password = self.add_salt(nid, new_password)
+        new_password = self.add_salt(nid, new_password)[0]
 
         self.cursor.execute("""
             UPDATE
@@ -374,7 +374,7 @@ class AUTHENTICATION(SQLHandler):
             success: [bool] return True after changing password
         """
 
-        new_password = self.add_salt(nid, password)
+        new_password = self.add_salt(nid, password)[0]
 
         self.cursor.execute("""
             UPDATE

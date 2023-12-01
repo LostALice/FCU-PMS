@@ -323,20 +323,30 @@ def importUsers(nid: str, token: str, file_: UploadFile):
         "D": 1,
         "T": 2,
     }
-    for i in user_data:
-        record = i
-        record["PERMISSION"] = permission_map[record["NID"][0]]
+    try:
+        for i in user_data:
+            record = i
+            record["PERMISSION"] = permission_map[record["NID"][0]]
 
-        hashed_password = hashlib.sha256(
-            record["PASSWORD"].encode("utf-8")).hexdigest()
-        record["PASSWORD"] = AUTHENTICATION().add_salt(
-            record["NID"], hashed_password)
+            hashed_password = hashlib.sha256(
+                record["PASSWORD"].encode("utf-8")).hexdigest()
+            salt = AUTHENTICATION().add_salt(
+                record["NID"], hashed_password)
 
-        if not SQLHandler().importUsers(record):
-            return HTTPException(400, record)
+            record["PASSWORD"] = salt[0]
+            record["SALT"] = salt[1]
+
+            if not SQLHandler().importUsers(record):
+                return HTTPException(400, record)
+    except Exception as error:
+        return {
+            "status_code": 422,
+            "message": str(error)
+    }
 
     return {
         "status_code": 200,
+        "message": "導入成功"
     }
 
 # Subject

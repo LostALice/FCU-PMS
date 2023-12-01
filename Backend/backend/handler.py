@@ -1159,16 +1159,18 @@ class SQLHandler:
                 login.USERNAME,
                 login.PASSWORD,
                 login.EMAIL,
-                login.PERMISSION
+                login.PERMISSION,
+                login.SALT
             )
             VALUES
-                (%s, %s, %s, %s, %s)""",
+                (%s, %s, %s, %s, %s, %s)""",
                             (
                                 user_data["NID"],
                                 user_data["USERNAME"],
                                 user_data["PASSWORD"],
                                 user_data["EMAIL"],
-                                user_data["PERMISSION"]
+                                user_data["PERMISSION"],
+                                user_data["SALT"],
                             ))
         self.conn.commit()
         return True

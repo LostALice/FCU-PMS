@@ -22,9 +22,9 @@
                                 <thead>
                                     <tr>
                                         <th>NID<br></th>
-                                        <th>姓名<br></th>
-                                        <th>密碼<br></th>
-                                        <th>電郵地址<br></th>
+                                        <th>USERNAME<br></th>
+                                        <th>PASSWORD<br></th>
+                                        <th>EMAIL<br></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -98,12 +98,16 @@
         fileList.value = files
     }
 
-    function upload() {
+    async function upload() {
         if (!fileList.value) {
             message.value = "沒有檔案"
             return
         }
-        importUser(fileList.value);
+        const status = await importUser(fileList.value)
+        if (status["status_code"] != 200) {
+            message.value = "Error: " + status["status_code"] + " " + status["message"]
+            return
+        }
         message.value = "導入成功"
     }
 
