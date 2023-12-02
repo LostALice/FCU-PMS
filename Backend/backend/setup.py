@@ -315,7 +315,9 @@ class SQLSetupHandler(object):
         salt = "".join(SystemRandom().choice(
             string.ascii_uppercase + string.digits) for _ in range(4))
 
-        salted_string = self.database_setting["SUPER_USER"]["PASSWORD"] + salt
+        hashed_password = hashlib.sha256().update(self.database_setting["SUPER_USER"]["PASSWORD"]).hexdigest()
+
+        salted_string = hashed_password + salt
         sha256.update(salted_string.encode("utf8"))
         hashed_salted_password = sha256.hexdigest()
 

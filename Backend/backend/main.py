@@ -34,6 +34,7 @@ app = FastAPI(debug=DEBUG)
 # CORS config
 ALLOW_ORIGINS = json_file["CORS"]["ALLOW_ORIGINS"]
 ALLOW_ORIGINS_REGEX = json_file["CORS"]["ALLOW_ORIGINS_REGEX"]
+print("Allowed site:", ALLOW_ORIGINS)
 
 app.add_middleware(
     CORSMiddleware,

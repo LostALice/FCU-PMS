@@ -30,6 +30,11 @@ services:
             # optional
             # - ALLOW_ORIGINS_REGEX=regex
 
+            # superuser setting
+            # SUPER_USER_NID=T0000000
+            # SUPER_USER_USERNAME=ADMIN
+            # SUPER_USER_PASSWORD=password@ADMIN
+
         ports:
           - 8000:8080
         restart: unless-stopped
@@ -39,6 +44,7 @@ services:
 
     mysql:
         image: mysql:latest
+        container_name: mysql
         environment:
             # should be same as pms.PASSWORD
             - MYSQL_ROOT_PASSWORD=Abc!@#$%^&*()
