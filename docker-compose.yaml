@@ -27,6 +27,9 @@ services:
             # CORS allowed orgins
             # use "," to split different orgins
             - CORS_ALLOW_ORIGINS=https://pms.tyrantrex.icu,http://test.tyrantrex.icu
+            # optional
+            # - ALLOW_ORIGINS_REGEX=regex
+
         ports:
           - 8000:8080
         restart: unless-stopped
