@@ -210,7 +210,12 @@ class AUTHENTICATION(SQLHandler):
 
         sha256 = hashlib.sha256()
         self.cursor.execute("SELECT login.SALT FROM login WHERE login.NID = %s", (nid,))
-        salt = self.cursor.fetchall()[0][0]
+        salt = self.cursor.fetchall()
+
+        if salt[0]:
+            salt = salt[0][0]
+        else:
+            return False
 
         salted_string = hashed_password + salt
 

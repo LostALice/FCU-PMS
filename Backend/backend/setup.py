@@ -1,7 +1,10 @@
 # Code by AkinoAlice@Tyrant_Rex
 
-import mysql.connector as connector
+from random import SystemRandom
 
+import mysql.connector as connector
+import hashlib
+import string
 import json
 import os
 
@@ -77,7 +80,12 @@ class SettingSetupHandler(object):
                     "DATABASE": os.getenv("DATABASE") if os.getenv("DATABASE") else "PMS",
                     "HOST": os.getenv("HOST") if os.getenv("HOST") else "localhost",
                     "USER": os.getenv("USER") if os.getenv("USER") else "root",
-                    "PASSWORD": os.getenv("PASSWORD") if os.getenv("PASSWORD") else "Abc!@#$%^&*()"
+                    "PASSWORD": os.getenv("PASSWORD") if os.getenv("PASSWORD") else "Abc!@#$%^&*()",
+                    "SUPER_USER": {
+                        "NID": os.getenv("SUPER_USER_NID") if os.getenv("SUPER_USER_NID") else "T0000000",
+                        "USERNAME": os.getenv("SUPER_USER_USERNAME") if os.getenv("SUPER_USER_USERNAME") else "ADMIN",
+                        "PASSWORD": os.getenv("SUPER_USER_PASSWORD") if os.getenv("SUPER_USER_PASSWORD") else "password@ADMIN"
+                    },
                 },
                 "JWT": {
                     "JWT_TOKEN_EXPIRE_TIME": os.getenv("JWT_TOKEN_EXPIRE_TIME") if os.getenv("JWT_TOKEN_EXPIRE_TIME") else 3600,
@@ -300,4 +308,31 @@ class SQLSetupHandler(object):
             )
             ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci"""
                             )
+        self.conn.commit()
+
+        sha256 = hashlib.sha256()
+
+        salt = "".join(SystemRandom().choice(
+            string.ascii_uppercase + string.digits) for _ in range(4))
+
+        salted_string = self.database_setting["SUPER_USER"]["PASSWORD"] + salt
+        sha256.update(salted_string.encode("utf8"))
+        hashed_salted_password = sha256.hexdigest()
+
+        self.curser.execute("""
+            INSERT INTO login (
+                login.NID,
+                login.USERNAME,
+                login.PASSWORD,
+                login.PERMISSION,
+                login.SALT
+            )
+                VALUES
+                (%s, %s, %s, 3, %s)""", (
+            self.database_setting["SUPER_USER"]["NID"],
+            self.database_setting["SUPER_USER"]["USERNAME"],
+            hashed_salted_password,
+            salt
+        )
+        )
         self.conn.commit()
