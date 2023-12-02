@@ -212,7 +212,7 @@ class AUTHENTICATION(SQLHandler):
         self.cursor.execute("SELECT login.SALT FROM login WHERE login.NID = %s", (nid,))
         salt = self.cursor.fetchall()
 
-        if salt[0]:
+        if salt:
             salt = salt[0][0]
         else:
             return False
