@@ -21,7 +21,9 @@
 
     onUpdated(() => {
         AlertMessage.value = props.message
-        console.error(AlertMessage.value)
+        if (!AlertMessage.value == "") {
+            console.error(AlertMessage.value)
+        }
         setTimeout(() => {
             emit("closeBlock")
         }, 3000)

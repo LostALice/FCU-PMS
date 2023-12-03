@@ -129,7 +129,7 @@
     import { useRouter } from "vue-router"
     import { watch, ref } from "vue"
 
-    console.info("asd")
+    console.warn("不要增加我的工作量")
 
     const nid = ref(localStorage["nid"])
     const FixedTop = ref(false)
