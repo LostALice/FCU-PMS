@@ -2134,6 +2134,7 @@ def getAssignmentInfo(nid: str, token: str, assignmentUUID: str, projectUUID: st
                 "author": [str] assignment author
                 "date": [datetime] date of submission
                 "allowedFileTypes": [str] allowed file's types
+                "status": [str] "已繳交" | "未完成" | "已評分"
             ]
         ]
     """

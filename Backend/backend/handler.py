@@ -881,7 +881,8 @@ class SQLHandler:
                 assignment.MARK,
                 assignment.WEIGHT,
                 assignment.SUBMISSION_DATE,
-                assignment.ALLOWED_FORMATS
+                assignment.ALLOWED_FORMATS,
+                assignment.STATUS
             FROM
                 assignment
             JOIN
@@ -901,6 +902,7 @@ class SQLHandler:
             "weight": info[3],
             "date": info[4],
             "allowedFileTypes": info[5],
+            "allowedFileTypes": info[6],
         }
 
         self.cursor.execute("""

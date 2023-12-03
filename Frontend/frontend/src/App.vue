@@ -28,7 +28,7 @@
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link px-4" to="/profile">
+                        <router-link class="nav-link px-4" :to="`/about/${nid}`">
                             <i class="fas fa-user" style="font-size: 20px;"></i>
                             <span style="font-size: 14px;">個人資料</span>
                         </router-link>

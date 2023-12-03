@@ -2,7 +2,7 @@
     <div>
         <div class="card shadow my-3">
             <div class="card-header py-3">
-                <p class="text-primary m-0 fw-bold" style="font-size: 28px;">Group&nbsp;Info</p>
+                <p class="text-primary m-0 fw-bold" style="font-size: 28px;">{{ $route.name }}</p>
             </div>
             <div class="card-body">
                 <div class="col">

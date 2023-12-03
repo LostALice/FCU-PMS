@@ -85,7 +85,7 @@
                 </div>
             </div>
         </div>
-        <SubmitView v-if="allowedFileTypes" :allowedFileTypes="allowedFileTypes" />
+        <SubmitView v-if="allowedFileTypes && assignmentStatus==`已評分`" :allowedFileTypes="allowedFileTypes" />
         <AlertBlock :message="message" @closeBlock="message=``" />
     </div>
 </template>
@@ -101,6 +101,7 @@
     import { ref } from "vue"
 
     const allowedFileTypes = ref("")
+    const assignmentStatus = ref("")
     const message = ref("")
     const weight = ref("")
     const group = ref("")
@@ -146,6 +147,7 @@
         weight.value = info.weight
         date.value = info.date.replace("T", " ")
         allowedFileTypes.value = info.allowedFileTypes
+        assignmentStatus.value = info.state
 
         if (!info.assignment_file){
             info.assignment_file = []

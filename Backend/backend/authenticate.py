@@ -212,10 +212,13 @@ class AUTHENTICATION(SQLHandler):
         self.cursor.execute("SELECT login.SALT FROM login WHERE login.NID = %s", (nid,))
         salt = self.cursor.fetchall()
 
+        print(salt)
         if salt:
             salt = salt[0][0]
         else:
-            return False
+            return {
+                "authenticate": False
+            }
 
         salted_string = hashed_password + salt
 
