@@ -130,7 +130,7 @@ async def getPermissionLevel(nid: str, token: str):
     for i in [nid, token]:
         if not AUTHENTICATION().SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400
             }
 
@@ -157,7 +157,7 @@ async def JWTValidation(nid: str, token: str):
     for i in [nid, token]:
         if not AUTHENTICATION().SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400
             }
 
@@ -195,7 +195,7 @@ async def TimeoutStatus(nid: str, token: str):
     for i in [nid, token]:
         if not AUTHENTICATION().SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400
             }
 
@@ -238,7 +238,7 @@ def getLog(nid: str, token: str):
     for i in [nid, token]:
         if not AUTHENTICATION().SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400
             }
 
@@ -271,7 +271,7 @@ def forceChangePassword(nid: str, token: str, target_nid: str, password: str):
     for i in [target_nid, password]:
         if not AUTHENTICATION().SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400
             }
 
@@ -440,7 +440,7 @@ def createSubject(
     for i in [subjectName, year, startDate, endDate, settlementStartDate, settlementEndDate]:
         if not AUTHENTICATION().SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400
             }
 
@@ -490,7 +490,7 @@ def deleteSubject(nid: str, token: str, subjectUUID: str):
 
     if not AUTHENTICATION().SQLInjectionCheck(prompt=subjectUUID):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": subjectUUID,
             "status_code": 400
         }
     success = SQLHandler().deleteSubjectData(subjectUUID)
@@ -534,7 +534,7 @@ def getProject(nid: str, token: str, subjectUUID: str):
     for i in [subjectUUID]:
         if not access.SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400
             }
     if not access.permission_check(nid, func_name):
@@ -606,7 +606,7 @@ def createProject(nid: str, token: str, subjectUUID: str, projectName: str):
     for i in [subjectUUID, projectName]:
         if not AUTHENTICATION().SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400
             }
 
@@ -644,7 +644,7 @@ def deleteProject(nid: str, token: str, projectUUID: str):
 
     if not access.SQLInjectionCheck(prompt=projectUUID):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": projectUUID,
             "status_code": 400
         }
 
@@ -693,7 +693,7 @@ def getProjectInfo(nid: str, token: str, projectUUID: str):
 
     if not access.SQLInjectionCheck(prompt=projectUUID):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": projectUUID,
             "status_code": 400
         }
 
@@ -739,7 +739,7 @@ def getStudentData(nid: str, token: str, projectUUID: str):
 
     if not access.SQLInjectionCheck(prompt=projectUUID):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": projectUUID,
             "status_code": 400
         }
 
@@ -785,7 +785,7 @@ def getStudentList(nid: str, token: str, projectUUID: str):
 
     if not access.SQLInjectionCheck(prompt=projectUUID):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": projectUUID,
             "status_code": 400
         }
 
@@ -835,7 +835,7 @@ def newStudent(nid: str, token: str, projectUUID: str, studentNID: str):
     for i in [projectUUID, studentNID]:
         if not AUTHENTICATION().SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400
             }
     params = {
@@ -872,7 +872,7 @@ def deleteStudent(nid: str, token: str, studentNID: str, projectUUID: str):
     for i in [studentNID, projectUUID]:
         if not AUTHENTICATION().SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400
             }
 
@@ -914,7 +914,7 @@ def getStudentInfo(nid: str, token: str, studentNID: str):
 
     if not access.SQLInjectionCheck(prompt=studentNID):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": studentNID,
             "status_code": 400
         }
 
@@ -961,7 +961,7 @@ def importStudent(nid: str, token: str, projectUUID: str, file_: UploadFile):
 
     if not AUTHENTICATION().SQLInjectionCheck(prompt=projectUUID):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": projectUUID,
             "status_code": 400
         }
 
@@ -1010,7 +1010,7 @@ def getTeacherData(nid: str, token: str, projectUUID: str):
 
     if not access.SQLInjectionCheck(prompt=projectUUID):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": projectUUID,
             "status_code": 400
         }
 
@@ -1056,7 +1056,7 @@ def getTeacherList(nid: str, token: str, projectUUID):
 
     if not access.SQLInjectionCheck(prompt=projectUUID):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": projectUUID,
             "status_code": 400
         }
 
@@ -1106,7 +1106,7 @@ def newTeacher(nid: str, token: str, projectUUID: str, teacherNID: str):
     for i in [projectUUID, teacherNID]:
         if not AUTHENTICATION().SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400
             }
     params = {
@@ -1143,7 +1143,7 @@ def deleteTeacher(nid: str, token: str, teacherNID: str, projectUUID: str):
     for i in [teacherNID, projectUUID]:
         if not AUTHENTICATION().SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400
             }
 
@@ -1187,7 +1187,7 @@ def getTeacherInfo(nid: str, token: str, teacherNID: str):
 
     if not access.SQLInjectionCheck(prompt=teacherNID):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": teacherNID,
             "status_code": 400
         }
 
@@ -1234,7 +1234,7 @@ def importTeacher(nid: str, token: str, projectUUID: str, file_: UploadFile):
 
     if not AUTHENTICATION().SQLInjectionCheck(prompt=projectUUID):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": projectUUID,
             "status_code": 400
         }
 
@@ -1285,7 +1285,7 @@ def getAnnouncementData(nid: str, token: str, projectUUID: str):
 
     if not access.SQLInjectionCheck(prompt=projectUUID):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": projectUUID,
             "status_code": 400
         }
 
@@ -1338,7 +1338,7 @@ def createAnnouncement(nid: str, token: str, projectUUID: str, title: str, conte
     for i in [projectUUID, title, context]:
         if not AUTHENTICATION().SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400,
             }
 
@@ -1386,7 +1386,7 @@ def deleteAnnouncement(nid: str, token: str, projectUUID: str, announcementUUID:
     for i in [projectUUID, announcementUUID]:
         if not AUTHENTICATION().SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400
             }
 
@@ -1423,7 +1423,7 @@ def getAnnouncementInfo(nid: str, token: str, announcementUUID: str):
 
     if not access.SQLInjectionCheck(prompt=announcementUUID):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": announcementUUID,
             "status_code": 400
         }
 
@@ -1471,7 +1471,7 @@ def getGroupData(nid: str, token: str, projectUUID: str):
 
     if not access.SQLInjectionCheck(prompt=projectUUID):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": projectUUID,
             "status_code": 400
         }
 
@@ -1522,7 +1522,7 @@ def newGroup(nid: str, token: str, projectUUID: str, member: str, group_name: st
 
     if not AUTHENTICATION().SQLInjectionCheck(prompt=projectUUID):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": projectUUID,
             "status_code": 400
         }
 
@@ -1560,7 +1560,7 @@ def getGroupToken(nid: str, token: str):
 
     if not AUTHENTICATION().SQLInjectionCheck(prompt=nid):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": nid,
             "status_code": 400
         }
 
@@ -1593,7 +1593,7 @@ def getGroupTeacherData(nid: str, token: str, projectUUID: str):
 
     if not AUTHENTICATION().SQLInjectionCheck(prompt=projectUUID):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": projectUUID,
             "status_code": 400
         }
 
@@ -1638,7 +1638,7 @@ def getGroupStudentData(nid: str, token: str, projectUUID: str):
 
     if not access.SQLInjectionCheck(prompt=projectUUID):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": projectUUID,
             "status_code": 400
         }
 
@@ -1685,7 +1685,7 @@ def getGroupInfo(nid: str, token: str, groupUUID: str):
 
     if not access.SQLInjectionCheck(prompt=groupUUID):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": groupUUID,
             "status_code": 400
         }
 
@@ -1724,7 +1724,7 @@ def deleteGroup(nid: str, token: str, groupUUID: str, projectUUID: str):
 
     if not access.SQLInjectionCheck(prompt=groupUUID):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": groupUUID,
             "status_code": 400
         }
 
@@ -1776,7 +1776,7 @@ def getAssignment(nid: str, token: str, projectUUID: str):
     for i in [projectUUID]:
         if not AUTHENTICATION().SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400
             }
 
@@ -1826,7 +1826,7 @@ def downloadAssignment(
     for i in [taskUUID, fileID]:
         if not AUTHENTICATION().SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400
             }
 
@@ -1880,7 +1880,7 @@ def uploadAssignment(
     for i in [projectUUID, taskUUID, filename]:
         if not AUTHENTICATION().SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400
             }
 
@@ -1929,7 +1929,7 @@ def deleteAssignment(nid: str, token: str, assignmentUUID: str, projectUUID: str
     for i in [projectUUID]:
         if not AUTHENTICATION().SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400
             }
 
@@ -1980,7 +1980,7 @@ def deleteAssignmentItem(nid: str, token: str, taskUUID: str, fileUUID: str, aut
     for i in [taskUUID, fileUUID, author]:
         if not AUTHENTICATION().SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400
             }
 
@@ -2026,7 +2026,7 @@ def markAssignmentScore(nid: str, token: str, projectUUID: str, taskUUID: str, m
     for i in [projectUUID, taskUUID, marks]:
         if not AUTHENTICATION().SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400
             }
 
@@ -2083,7 +2083,7 @@ def newAssignment(
     for i in [projectUUID, gid, name, weight, date]:
         if not AUTHENTICATION().SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400
             }
 
@@ -2144,7 +2144,7 @@ def getAssignmentInfo(nid: str, token: str, assignmentUUID: str, projectUUID: st
     for i in [projectUUID, assignmentUUID]:
         if not AUTHENTICATION().SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400
             }
 
@@ -2192,7 +2192,7 @@ async def changeEmail(nid: str, token: str, newEmail: str):
 
     if not AUTHENTICATION().SQLInjectionCheck(prompt=newEmail):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": newEmail,
             "status_code": 400
         }
 
@@ -2236,7 +2236,7 @@ async def changePassword(nid: str, token: str, oldPassword: str, newPassword: st
     for i in [oldPassword, newPassword]:
         if not AUTHENTICATION().SQLInjectionCheck(prompt=i):
             return {
-                "SQLInjectionCheck": False,
+                "SQLInjectionCheck": i,
                 "status_code": 400
             }
 
@@ -2298,7 +2298,7 @@ async def changeIcon(nid: str, token: str, file_: UploadFile, filename: str):
 
     if not AUTHENTICATION().SQLInjectionCheck(prompt=filename):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": filename,
             "status_code": 400
         }
 
@@ -2354,7 +2354,7 @@ def getDeadlineProject(nid: str, token: str):
 
     if not AUTHENTICATION().SQLInjectionCheck(prompt=nid):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": nid,
             "status_code": 400
         }
 
@@ -2402,7 +2402,7 @@ def getAboutPage(nid: str, token: str, targetNID: str):
 
     if not AUTHENTICATION().SQLInjectionCheck(prompt=nid):
         return {
-            "SQLInjectionCheck": False,
+            "SQLInjectionCheck": nid,
             "status_code": 400
         }
 

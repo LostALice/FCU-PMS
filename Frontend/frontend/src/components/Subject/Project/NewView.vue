@@ -49,11 +49,11 @@
             message.value = "名稱不能為空"
             return
         }
-        await createProject(
-            subjectUUID,
-            projectName.value,
-        )
-
+        const status = await createProject(subjectUUID, projectName.value)
+        if (status.status_code == 400) {
+            message.value = "SQLInjectionCheck: " + status["SQLInjectionCheck"]
+            return
+        }
         router.go(-1)
     }
 </script>

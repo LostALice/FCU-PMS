@@ -84,13 +84,16 @@ s<template>
     import { useRouter } from "vue-router"
     import { ref } from "vue"
 
-    const message = ref("")
-    const projectName = ref("")
-    const year = ref("")
-    const startDate = ref("")
-    const endDate = ref("")
     const settlementStartDate = ref("")
     const settlementEndDate = ref("")
+
+    const projectName = ref("")
+
+    const startDate = ref("")
+    const endDate = ref("")
+
+    const message = ref("")
+    const year = ref("")
 
     const router = useRouter()
 
@@ -109,7 +112,7 @@ s<template>
             message.value = "未填必需項目"
             return
         }
-        await createSubject(
+        const status = await createSubject(
             projectName.value,
             year.value,
             startDate.value,
@@ -117,6 +120,10 @@ s<template>
             settlementStartDate.value,
             settlementEndDate.value
         )
+        if (status.status_code == 400) {
+            message.value = "SQLInjectionCheck: " + status["SQLInjectionCheck"]
+            return
+        }
 
         router.go(-1)
     }

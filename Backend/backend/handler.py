@@ -55,7 +55,7 @@ class SQLHandler:
             user=self.USER,
             password=self.PASSWORD,
         )
-        self.cursor = self.conn.cursor()
+        self.cursor = self.conn.cursor(prepared=True)
 
     # close the connection after query executed
     def sql_term(func) -> any:
@@ -419,7 +419,7 @@ class SQLHandler:
 
     @sql_term
     def createAnnouncement(self, params: dict = {}) -> bool:
-        a = self.cursor.execute("""
+        self.cursor.execute("""
             INSERT INTO announcements (
                 announcements.PROJECT_ID,
                 announcements.ANNOUNCEMENTS_ID,
@@ -438,7 +438,6 @@ class SQLHandler:
             params["ANNOUNCEMENTS"],
             params["LAST_EDIT"]
         ))
-
         self.conn.commit()
         return True
 
@@ -1220,5 +1219,6 @@ class LOGGER(SQLHandler):
                 args: [tuple|str] the argument pass into the function
             ]
         """
-        self.cursor.execute("""SELECT * FROM log LIMIT 5000""")
+        self.log("getRecord", ("ADMIN",))
+        self.cursor.execute("""SELECT * FROM log ORDER BY log.DATE DESC limit 5000""")
         return self.cursor.fetchall()

@@ -229,13 +229,20 @@
 
         const oldHash_password = HashSHA256(oldPassword.value)
 
-        const status_code = await changePassword_(oldHash_password, newHash_password)
-        if (status_code.status_code == 200) {
+        const status = await changePassword_(oldHash_password, newHash_password)
+
+        if (status.status_code == 400) {
+            message.value = "SQLInjectionCheck: " + status["SQLInjectionCheck"]
+            return
+        }
+
+        if (status.status_code == 200) {
             localStorage.clear()
             router.replace("/login")
             return
         }
-        if (status_code.status_code == 400) {
+
+        if (status.status_code == 400) {
             newPassword.value = ""
             oldPassword.value = ""
             confirmPassword.value = ""

@@ -174,10 +174,18 @@
         }
         const GID = await getGroupToken()
         for (const i of teacherSelected.value) {
-            newGroup(projectUUID, i.nid, groupName.value, GID.GID)
+            const status = await newGroup(projectUUID, i.nid, groupName.value, GID.GID)
+            if (status.status_code == 400) {
+                message.value = "SQLInjectionCheck: " + status["SQLInjectionCheck"]
+                return
+            }
         }
         for (const i of studentSelected.value) {
-            newGroup(projectUUID, i.nid, groupName.value, GID.GID)
+            const status = await newGroup(projectUUID, i.nid, groupName.value, GID.GID)
+            if (status.status_code == 400) {
+                message.value = "SQLInjectionCheck: " + status["SQLInjectionCheck"]
+                return
+            }
         }
         router.go(-1)
     }

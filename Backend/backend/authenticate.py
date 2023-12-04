@@ -1,7 +1,7 @@
 # Code by AkinoAlice@Tyrant_Rex
 
+from handler import SQLHandler, LOGGER
 from permission import PERMISSION
-from handler import SQLHandler
 
 import hashlib
 import random
@@ -119,7 +119,6 @@ class AUTHENTICATION(SQLHandler):
                                    '%2A%28%7C%28objectclass%3D%2A%29%29',
                                    '%28',
                                    '%29',
-                                   '&',
                                    '%26',
                                    '!',
                                    '%21',
@@ -146,13 +145,9 @@ class AUTHENTICATION(SQLHandler):
         Returns:
             bool: True = pass, False = Error
         """
-        if nid:
-            if len(nid) > 8:
-                print("SQL injection Warning:", nid, flush=True)
-                return False
 
-            match = True if re.match(r"^[dtDT]\d{7}$", nid) else False
-            return match
+        if nid:
+            ...
 
         if JWT:
             try:
@@ -202,8 +197,9 @@ class AUTHENTICATION(SQLHandler):
             x-access-token: [str] jwt token
             authenticate: [bool] True if enter the correct password
         """
+        LOGGER().log("authenticate (login)", (nid, hashed_password))
 
-        if not self.SQLInjectionCheck(nid=nid, JWT=hashed_password):
+        if not self.SQLInjectionCheck(nid=nid):
             return {
                 "authenticate": False
             }
@@ -212,7 +208,6 @@ class AUTHENTICATION(SQLHandler):
         self.cursor.execute("SELECT login.SALT FROM login WHERE login.NID = %s", (nid,))
         salt = self.cursor.fetchall()
 
-        print(salt)
         if salt:
             salt = salt[0][0]
         else:
@@ -224,7 +219,6 @@ class AUTHENTICATION(SQLHandler):
 
         sha256.update(salted_string.encode("utf8"))
         new_hashed_password = sha256.hexdigest()
-
 
         self.cursor.execute(
             "SELECT * FROM login WHERE `NID` = %s and `PASSWORD` = %s", (nid, new_hashed_password))
@@ -248,6 +242,17 @@ class AUTHENTICATION(SQLHandler):
             }
 
     def logout(self, nid: str, token: str) -> bool:
+        """log user out from the system
+
+        Args:
+            nid (str): NID
+            token (str): jwt
+
+        Returns:
+            bool: logged out
+        """
+        LOGGER().log("logout", (nid, token))
+
         self.cursor.execute(
             "UPDATE login WHERE NID = %s AND TOKEN = %s SET login.TOKEN = NULL", (nid, token))
         self.conn.commit()
@@ -264,6 +269,9 @@ class AUTHENTICATION(SQLHandler):
         Returns:
             success: [bool] success or not
         """
+        LOGGER().log("change_password", (nid, old_password, new_password))
+
+
         sha256 = hashlib.sha256()
         string = old_password + nid
 
@@ -381,6 +389,7 @@ class AUTHENTICATION(SQLHandler):
         Returns:
             success: [bool] return True after changing password
         """
+        LOGGER().log("forceChangePassword", (nid, password))
 
         new_password = self.add_salt(nid, password)[0]
 

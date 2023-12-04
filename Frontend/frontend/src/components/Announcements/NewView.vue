@@ -161,7 +161,12 @@
             message.value = "標題不能為空"
             return
         }
-        await newAnnouncement(projectUUID, title.value, context.value)
+        const status = await newAnnouncement(projectUUID, title.value, context.value)
+        if (status.status_code == 400) {
+            message.value = "SQLInjectionCheck: " + status["SQLInjectionCheck"]
+            return
+        }
+
         router.push(`/project/${projectUUID}/announcement`)
     }
 </script>

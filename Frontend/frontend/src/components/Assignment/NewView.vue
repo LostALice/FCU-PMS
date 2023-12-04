@@ -252,7 +252,7 @@
         groupList.value = data
     })
 
-    function saveAssignment() {
+    async function saveAssignment() {
         if (name.value == "") {
             message.value = "未填作業名稱"
             return
@@ -278,7 +278,11 @@
         }
         console.log(allowedFileTypes.value)
         for (const i of groupSelected.value) {
-            newAssignment(projectUUID, i.groupUUID, name.value, weight.value, date.value, allowedFileTypes.value)
+            const status = await newAssignment(projectUUID, i.groupUUID, name.value, weight.value, date.value, allowedFileTypes.value)
+            if (status.status_code == 400) {
+                message.value = "SQLInjectionCheck: " + status["SQLInjectionCheck"]
+                return
+            }
         }
         router.go(-1)
     }
