@@ -11,17 +11,17 @@
                         <ul class="list-group list-group-numbered mb-3">
                             <li class="list-group-item w-100"><span>文件格式必須為 .xls 或 .xlsx</span></li>
                             <li class="list-group-item"><span>第一行將不會被導入</span></li>
-                            <li class="list-group-item"><span>格順序應如下所示 </span><span class="bg-warning">NID (大寫), 姓名, 班級, 類型,
+                            <li class="list-group-item"><span>格順序應如下所示 </span><span class="bg-warning">學號 (大寫), 姓名, 班級, 類型,
                                     科系ID, 科系, 學院ID, 學院<br></span></li>
-                            <li class="list-group-item"><span>NID必須包含在內，否則數據將不會導入</span></li>
-                            <li class="list-group-item"><span>NID 不應重複</span></li>
+                            <li class="list-group-item"><span>學號必須包含在內，否則數據將不會導入</span></li>
+                            <li class="list-group-item"><span>學號不應重複</span></li>
                             <li class="list-group-item"><span>示例提供如下</span></li>
                         </ul>
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>NID<br></th>
+                                        <th>學號<br></th>
                                         <th>姓名<br></th>
                                         <th>班級<br></th>
                                         <th>類型<br></th>

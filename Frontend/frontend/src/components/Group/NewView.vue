@@ -134,7 +134,7 @@
 
     const Headers = [
         {
-            text: "NID",
+            text: "學號",
             value: "nid",
             sortable: true,
         },

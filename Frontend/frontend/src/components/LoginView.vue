@@ -7,7 +7,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <input v-model="nid" @keyup.enter="login_func" id="nid" class="form-control" type="text" name="nid" placeholder="NID" style="border-bottom-color: rgb(112,128,146)">
+                    <input v-model="nid" @keyup.enter="login_func" id="nid" class="form-control" type="text" name="nid" placeholder="學號" style="border-bottom-color: rgb(112,128,146)">
                 </div>
 
                 <div class="mb-3">
@@ -42,7 +42,7 @@
 
     async function login_func() {
         if (nid.value === "") {
-            message.value = "請輸入NID"
+            message.value = "請輸入學號"
             return
         }
         if (password.value === "") {
@@ -65,7 +65,7 @@
             await getPermissionLevel()
             router.replace("/dashboard")
         } else {
-            message.value = "用戶名或密碼不正確"
+            message.value = "學號或密碼不正確"
             return
         }
     }

@@ -83,7 +83,7 @@
     const teacherItems = ref([])
     const teacherHeaders = [
         {
-            text: "NID",
+            text: "學號",
             value: "nid",
             sortable: true,
         },
@@ -97,7 +97,7 @@
     const selectSearchValue = ref("")
     const SelectHeaders = [
         {
-            text: "NID",
+            text: "學號",
             value: "nid",
             sortable: true,
         },

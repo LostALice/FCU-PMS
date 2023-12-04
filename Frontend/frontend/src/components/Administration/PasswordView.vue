@@ -11,7 +11,7 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <label class="form-label">
-                                    <strong>NID</strong>
+                                    <strong>學號</strong>
                                 </label>
                                 <input v-model="nid" class="form-control shadow-none" type="text" autocomplete="current-password" minlength="8" maxlength="50" required="">
                             </div>

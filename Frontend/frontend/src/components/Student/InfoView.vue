@@ -8,7 +8,7 @@
                 <div class="col">
                     <div class="row">
                         <div class="col col-4 justify-content-center">
-                            <p style="font-size: 24px;padding-left: 10px;">NID</p>
+                            <p style="font-size: 24px;padding-left: 10px;">學號</p>
                         </div>
                         <div class="col">
                             <router-link style="font-size: 24px" :to="`/about/${studentNID}`">{{ studentNID }}</router-link>
