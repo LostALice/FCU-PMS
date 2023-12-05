@@ -11,7 +11,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <input v-model="password" @keyup.enter="login_func" id="login_password" autocomplete class="form-control" type="password" name="password" placeholder="Password">
+                    <input v-model="password" @keyup.enter="login_func" id="login_password" autocomplete class="form-control" type="password" name="password" placeholder="密碼">
                 </div>
 
                 <div class="mb-3">
