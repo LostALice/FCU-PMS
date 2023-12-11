@@ -31,7 +31,7 @@
                             <p style="font-size: 24px;padding-left: 10px;">小組</p>
                         </div>
                         <div class="col">
-                            <p style="font-size: 24px;color: rgb(38,38,38);">{{ group }}<br></p>
+                            <p style="font-size: 24px;color: rgb(38,38,38);">{{ group }}</p>
                         </div>
                     </div>
 
@@ -69,7 +69,7 @@
             </div>
             <div class="card-body">
                 <div class="col">
-                    <EasyDataTable :headers="headers" :items="items" table-class-name="customize-table" show-index>
+                    <EasyDataTable v-if="name" :headers="headers" :items="items" table-class-name="customize-table" show-index alternating>
                         <template #item-title="item">
                             <a :href="`/download/${item.taskID}/${item.fileID}/${item.filename}`" @click="download(item)" @click.prevent="" :download="item.filename">{{ item.filename }} </a>
                         </template>
@@ -85,26 +85,28 @@
                 </div>
             </div>
         </div>
-        <SubmitView />
-        <AlertBlock :message="message" />
+        <SubmitView v-if="allowedFileTypes && assignmentStatus==`已評分`" :allowedFileTypes="allowedFileTypes" />
+        <AlertBlock :message="message" @closeBlock="message=``" />
     </div>
 </template>
 
 <script setup>
-    import { deleteAssignmentItem } from "@/assets/js/helper.js";
-    import { markAssignmentScore } from "@/assets/js/helper.js";
-    import { downloadAssignment } from "@/assets/js/helper.js";
-    import { getAssignmentInfo } from "@/assets/js/helper.js";
+    import { deleteAssignmentItem } from "@/assets/js/helper.js"
+    import { markAssignmentScore } from "@/assets/js/helper.js"
+    import { downloadAssignment } from "@/assets/js/helper.js"
+    import { getAssignmentInfo } from "@/assets/js/helper.js"
+    import SubmitView from "./SubmitView.vue"
     import { useRouter } from "vue-router"
-    import SubmitView from "./SubmitView"
-    import { ref, onMounted } from "vue"
-    import "vue3-easy-data-table";
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
+    const allowedFileTypes = ref("")
+    const assignmentStatus = ref("")
     const message = ref("")
-    const name = ref("")
+    const weight = ref("")
     const group = ref("")
     const mark = ref("")
-    const weight = ref("")
+    const name = ref("")
     const date = ref("")
 
     const router = useRouter()
@@ -144,6 +146,9 @@
         mark.value = info.mark
         weight.value = info.weight
         date.value = info.date.replace("T", " ")
+        allowedFileTypes.value = info.allowedFileTypes
+        assignmentStatus.value = info.state
+
         if (!info.assignment_file){
             info.assignment_file = []
         }
@@ -151,14 +156,14 @@
     })
 
     function markScore() {
-        const marks = parseInt(prompt("分數","1-100"))
+        const marks = parseInt(prompt("分數","0-100"))
         if (!marks) {
             MessageChannel.value = "輸入錯誤"
-            markScore()
+            return
         }
         if (marks <= 0 || marks > 100) {
             message.value = "輸入錯誤"
-            markScore()
+            return
         }
         if (confirm("提交分數後學生不能再提交作業\n是否確定?")) {
             markAssignmentScore(assignmentUUID, projectUUID, marks)
@@ -176,7 +181,7 @@
         const a = document.createElement("a");
         a.href = resultUrl;
         a.download = item.filename;
-        a.style.display = "none";
+        a.style.display = "none"
         document.body.appendChild(a);
 
         a.click();

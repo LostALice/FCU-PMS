@@ -35,6 +35,33 @@
                 <div class="col">
                     <div class="card shadow my-3">
                         <div class="card-header py-3">
+                            <p class="text-primary m-0 fw-bold" style="font-size: 28px;">更改電郵</p>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        <strong>新電郵</strong>
+                                    </label>
+                                    <input v-model="newEmail" class="form-control shadow-none" type="email" autocomplete="current-password" required="">
+                                </div>
+                                <div class="text-end mb-3">
+                                    <button @click="changeEmail_" class="btn btn-primary btn-sm shadow-none" type="submit">
+                                        <i class="fa fa-save"></i>
+                                        &nbsp;儲存
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg">
+            <div class="row">
+                <div class="col">
+                    <div class="card shadow my-3">
+                        <div class="card-header py-3">
                             <p class="text-primary m-0 fw-bold" style="font-size: 28px;">更改密碼</p>
                         </div>
                         <form>
@@ -82,31 +109,36 @@
                 </div>
             </div>
         </div>
-        <AlertBlock :message="message" />
+        <AlertBlock :message="message" @closeBlock="message=``" />
     </div>
 </template>
 
 <script setup>
-    import { changePassword_, getProfileIconImage, changeIcon, HashSHA256 } from "@/assets/js/helper.js"
+    import { getProfileIconImage  } from "@/assets/js/helper.js"
+    import { changePassword_ } from "@/assets/js/helper.js"
+    import { changeEmail } from "@/assets/js/helper.js"
+    import { changeIcon } from "@/assets/js/helper.js"
+    import { HashSHA256 } from "@/assets/js/helper.js"
     import { useRouter } from "vue-router"
-    import { ref, onMounted } from "vue"
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const router = useRouter()
 
-    const newPassword = ref("")
-    const oldPassword = ref("")
-    const confirmPassword = ref("")
-    const imageURL = ref("")
     const message = ref("")
+    const imageURL = ref("")
+    const newEmail = ref("")
+    const oldPassword = ref("")
+    const newPassword = ref("")
+    const confirmPassword = ref("")
 
-    const file = ref()
+    const file = ref(File)
 
     onMounted(async () => {
         imageURL.value = await getProfileIconImage()
     })
 
     async function uploadImage() {
-        console.log(file.value);
         if (file.value == undefined) {
             message.value = "沒有選取圖片"
             return
@@ -123,6 +155,27 @@
 
         if (file.value) {
             imageURL.value = URL.createObjectURL(file.value)
+        }
+    }
+
+    async function changeEmail_() {
+        console.log(newEmail.value)
+        if (!newEmail.value) {
+            message.value = "Email 為空"
+            return
+        }
+
+        if (!newEmail.value.includes("@")) {
+            message.value = "Email 格式錯誤"
+            return
+        }
+        const status = await changeEmail(newEmail.value)
+        if (status.status_code == 200) {
+            router.push(`/about/${localStorage["nid"]}`)
+        }
+        else {
+            message.value = "Server Error"
+            return
         }
     }
 
@@ -176,13 +229,20 @@
 
         const oldHash_password = HashSHA256(oldPassword.value)
 
-        const status_code = await changePassword_(oldHash_password, newHash_password)
-        if (status_code.status_code == 200) {
+        const status = await changePassword_(oldHash_password, newHash_password)
+
+        if (status.status_code == 400) {
+            message.value = "SQLInjectionCheck: " + status["SQLInjectionCheck"]
+            return
+        }
+
+        if (status.status_code == 200) {
             localStorage.clear()
             router.replace("/login")
             return
         }
-        if (status_code.status_code == 400) {
+
+        if (status.status_code == 400) {
             newPassword.value = ""
             oldPassword.value = ""
             confirmPassword.value = ""
@@ -190,5 +250,4 @@
             return
         }
     }
-
 </script>

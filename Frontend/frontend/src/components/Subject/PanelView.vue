@@ -30,7 +30,7 @@
                 </div>
                 <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
 
-                    <EasyDataTable :headers="headers" :items="items" :search-value="searchValue" table-class-name="customize-table" show-index>
+                    <EasyDataTable v-if="items" :headers="headers" :items="items" :search-value="searchValue" table-class-name="customize-table" show-index alternating>
                         <template #item-name="item">
                             <router-link :to="`/project/${item.subjectUUID}`">{{ item.name }}</router-link>
                         </template>
@@ -43,20 +43,22 @@
                             </div>
                         </template>
                     </EasyDataTable>
-
                 </div>
             </div>
         </div>
+        <AlertBlock :message="message" @closeBlock="message=``" />
     </div>
 </template>
 
 <script setup>
-    import { getSubject, deleteSubject } from "@/assets/js/helper.js"
-    import { ref, onMounted } from "vue";
-    import "vue3-easy-data-table";
+    import { deleteSubject } from "@/assets/js/helper.js"
+    import { getSubject } from "@/assets/js/helper.js"
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const permissionLevel = ref(localStorage["permissionLevel"])
     const searchValue = ref("");
+    const message = ref("")
     const items = ref([])
 
     const headers = [
@@ -112,6 +114,7 @@
 
     function deleteItem(item) {
         if (!confirm("確定刪除項目？")) {
+            message.value = "刪除成功"
             return
         }
         items.value.splice(item.index-1, 1)

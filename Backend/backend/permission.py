@@ -5,16 +5,16 @@ import json
 
 
 class PERMISSION(object):
-    """
-        IMPORTANT new function from authenticate.py should regis to setting.json
-        or else it cause exception
+    """ IMPORTANT new function from authenticate.py should regis to setting.json or else it cause exception
         This module based on the permission setting of setting.json
-        If you want to change the permission setting, you can edit the setting.json
-
+        If you want to change the permission setting, please edit the setting.json
     """
+
     def __init__(self, nid: str) -> None:
         self.nid = nid
         self.permission_level = SQLHandler().getPermission(self.nid)
+
+        # permission_level and its role
         self.roles = {
             0: "No Permission",
             1: "Student",
@@ -28,9 +28,6 @@ class PERMISSION(object):
             print(error, flush=True)
             raise FileNotFoundError("File not found: setting.json ")
 
-    def __str__(self) -> str:
-        return self.roles[self.permission]
-
     def get_role(self) -> str:
         return self.roles[self.permission]
 
@@ -41,3 +38,6 @@ class PERMISSION(object):
         if self.permission_level >= self.permission_setting[func_name]:
             return True
         return False
+
+    def __str__(self) -> str:
+        return self.roles[self.permission]

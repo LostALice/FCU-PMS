@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
-                    <EasyDataTable :headers="headers" :items="items" table-class-name="customize-table" show-index>
+                    <EasyDataTable v-if="items" :headers="headers" :items="items" table-class-name="customize-table" show-index alternating>
                         <template #item-title="item">
                             <router-link :to="`${$route.path}/info/${item.assignmentUUID}`">{{ item.title }} </router-link>
                         </template>
@@ -51,10 +51,11 @@
 </template>
 
 <script setup>
-    import { getAssignment, deleteAssignment } from "@/assets/js/helper.js"
+    import { deleteAssignment } from "@/assets/js/helper.js"
+    import { getAssignment } from "@/assets/js/helper.js"
     import { useRouter } from "vue-router"
-    import { ref, onMounted } from "vue"
-    import "vue3-easy-data-table";
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const router = useRouter()
     const projectUUID = router.currentRoute.value.params.projectID
@@ -74,7 +75,7 @@
             sortable: true
         },
         {
-            text: "公佈",
+            text: "公佈者",
             value: "uploader",
             sortable: true
         },

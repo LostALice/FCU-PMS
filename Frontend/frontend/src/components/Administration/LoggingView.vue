@@ -20,24 +20,27 @@
                         </div>
                     </div>
                 </div>
-                <EasyDataTable :headers="headers" :items="items" :sort-by="sortBy" :sort-type="sortType" :search-value="searchValue" table-class-name="customize-table" show-index />
+                <EasyDataTable :headers="headers" :items="items" :sort-by="sortBy" :sort-type="sortType" :search-value="searchValue" table-class-name="customize-table" show-index alternating />
             </div>
         </div>
+        <AlertBlock :message="message" @closeBlock="message=``" />
     </div>
 </template>
 
 <script setup>
-    import { getLog, getPermissionLevel } from "@/assets/js/helper.js";
+    import { getPermissionLevel } from "@/assets/js/helper.js"
+    import { getLog } from "@/assets/js/helper.js"
     import { useRouter } from "vue-router"
-    import { ref, onMounted } from "vue";
-    import "vue3-easy-data-table";
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const router = useRouter()
 
     const searchValue = ref("")
     const items = ref([])
-    const sortBy = "timestamp";
-    const sortType = "desc";
+    const sortBy = "timestamp"
+    const sortType = "desc"
+    const message = ref("")
 
     const headers = [
         {
@@ -58,9 +61,13 @@
     ]
 
     onMounted(async () => {
+        message.value = "Warning: You are using admin tool, be careful for those function."
+
         if (await getPermissionLevel() != 3) {
+            message.value = "YOU SHALL NOT PASS"
             router.replace("/dashboard")
             console.log(":<")
+            return
         }
 
         const data = await getLog()

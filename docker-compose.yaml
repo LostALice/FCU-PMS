@@ -1,39 +1,64 @@
 services:
-    frontend:
-        image: pms-frontend # tag
-        container_name: pms-frontend
-        ports:
-          - 8001:80
-        restart: unless-stopped
-        depends_on:
-          backend:
-            condition: service_started
+  frontend:
+    image: pms-frontend:latest # replace latest to your tag
+    container_name: pms-frontend
+    ports:
+      # internal: external
+      - 8001:80
+    restart: unless-stopped
 
-    backend:
-        image: pms-backend # tag
-        container_name: pms-backend
-        environment:
-            # optional
-            # - DATABASE="pms"
+    # start after backend container
+    depends_on:
+      backend:
+        condition: service_started
 
-            # mysql ip address
-            - HOST=172.30.0.2
-            - USER=root
-            # should be same as mysql.MYSQL_ROOT_PASSWORD
-            - PASSWORD=Abc!@#$%^&*()
-            - JWT_SECRET=Xyz)(*&^%$#@!)
-        ports:
-          - 8000:8080
-        restart: unless-stopped
-        depends_on:
-          mysql:
-            condition: service_started
+  backend:
+    image: pms-backend:latest # replace latest to your tag
+    # optional
+    container_name: pms-backend
+    environment:
+      # optional
+      # mysql database scheme name
+      # - DATABASE="pms"
+      # mysql ip address
+      # this following host is docker internal IP address
+      - HOST=172.30.0.2
+      # mysql username
+      - USER=root
+      # mysql password
+      # should be same as mysql.MYSQL_ROOT_PASSWORD
+      - PASSWORD=Abc!@#$%^&*()
+      # json web token
+      - JWT_SECRET=Xyz)(*&^%$#@!)
+      # ----------------------------------------------------------------
+      # CORS allowed orgins
+      # use "," to split different orgins
+      - CORS_ALLOW_ORIGINS=https://pms.tyrantrex.icu,http://test.tyrantrex.icu
+      # optional
+      # - ALLOW_ORIGINS_REGEX=regex
+      # ----------------------------------------------------------------
+      # superuser setting
+      # SUPER_USER_NID=T0000000
+      # SUPER_USER_USERNAME=ADMIN
+      # SUPER_USER_PASSWORD=password@ADMIN
+    ports:
+      # external: internal
+      - 8000:8080
+    # start after mysql container
+    depends_on:
+      mysql:
+        condition: service_started
+    restart: unless-stopped
 
-    mysql:
-        image: mysql:latest
-        environment:
-            # should be same as pms.PASSWORD
-            - MYSQL_ROOT_PASSWORD=Abc!@#$%^&*()
-        ports:
-          - 3306:3306
-        restart: unless-stopped
+  mysql:
+    image: mysql:latest
+    # optional
+    container_name: mysql
+    environment:
+      # mysql root password
+      # should be same as pms.PASSWORD
+      - MYSQL_ROOT_PASSWORD=Abc!@#$%^&*()
+    ports:
+      # external: internal
+      - 3306:3306
+    restart: unless-stopped

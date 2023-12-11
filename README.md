@@ -1,28 +1,26 @@
-# Feng Chia University Project Management System (PMS)
+# Feng Chia University iSchool Project Management System (PMS)
 
-# 逢甲大學專題管理系統
+# 逢甲大學創能學院專題管理系統
 
-# [***Demo Website***](https://pms.tyrantrex.icu)
+# [**_Demo Website_**](https://pms.tyrantrex.icu)
 
 # Demo Account
 
-| Role          | Username/nid | Password      |
-| ------------- | ------------ | ------------- |
-| administrator | T9999999     | Admin12345678 |
-| Teacher       | T1111111     | Abc12345678   |
-| Student       | D0000000     | Xyz87654321   |
+| Role          | Username/nid | Password       |
+| ------------- | ------------ | -------------- |
+| administrator | T0000000     | password@ADMIN |
 
 # Frontend
 
-> ## [***Repository***](https://github.com/LostALice/pms)
+> ## [**_Repository_**](https://github.com/LostALice/pms)
 >
-> ## [***Readme.md***](./Frontend/README.md)
+> ## [**_Readme.md_**](./Frontend/README.md)
 
 # Backend
 
-> ## [***Repository***](https://github.com/LostALice/school_website)
+> ## [**_Repository_**](https://github.com/LostALice/school_website)
 >
-> ## [***Readme.md***](./Backend/README.md)
+> ## [**_Readme.md_**](./Backend/README.md)
 
 # Issues
 

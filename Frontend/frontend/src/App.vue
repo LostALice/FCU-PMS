@@ -1,33 +1,34 @@
 <!-- #Code by AkinoAlice@Tyrant_Rex -->
 <template>
     <div id="wrapper">
+        <AlertBlock :message="message" @closeBlock="message=``" />
         <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
             <div class="container-fluid d-flex flex-column p-0">
-                <router-link class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0"
+                <router-link class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0 py-5"
                     to="/dashboard">
-                    <div class="sidebar-brand-text mx-3">
+                    <div class="sidebar-brand-text">
                         <span style="font-size: 15px;">
-                            <strong>逢甲大學專題管理系統</strong><br>
+                            <strong>逢甲大學創能學院</strong><br>
+                            <strong>專題管理系統</strong>
                         </span>
                     </div>
                 </router-link>
-
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/dashboard">
+                        <router-link class="nav-link px-4" to="/dashboard">
                             <i class="fas fa-tachometer-alt" style="font-size: 20px;"></i>
                             <span style="font-size: 14px;">儀表板</span>
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/subject">
+                        <router-link class="nav-link px-4" to="/subject">
                             <i class="fas fa-table" style="font-size: 20px;"></i>
                             <span style="font-size: 14px;">專案</span>
                         </router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link class="nav-link" to="/profile">
+                        <router-link class="nav-link px-4" :to="`/about/${nid}`">
                             <i class="fas fa-user" style="font-size: 20px;"></i>
                             <span style="font-size: 14px;">個人資料</span>
                         </router-link>
@@ -46,11 +47,18 @@
                                     <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown"
                                         href="#">
                                         {{ nid }}&nbsp;&nbsp;
-                                        <img class="border rounded-circle img-profile" :src="imageURL"></a>
+                                        <img class="border rounded-circle img-profile" :src="imageURL">
+                                    </a>
                                     <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
-                                        <router-link class="dropdown-item" to="/profile">
+                                        <router-link class="dropdown-item" :to="`/about/${nid}`">
                                             <i class="fas fa-user fa-sm fa-fw me-2 text-gray-400">
                                             </i>個人資料
+                                        </router-link>
+                                        <div class="dropdown-divider">
+                                        </div>
+                                        <router-link class="dropdown-item" to="/profile">
+                                            <i class="fa fa-cog fa-sm fa-fw me-2 text-gray-400">
+                                            </i>資料設定
                                         </router-link>
                                         <div class="dropdown-divider">
                                         </div>
@@ -58,7 +66,7 @@
                                             <i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400">
                                             </i>登出
                                         </a>
-                                        <div v-if="permissionLevel>=3">
+                                        <div v-if="permissionLevel >= 3">
                                             <div class="dropdown-divider alert-warning">
                                             </div>
                                             <router-link class="dropdown-item alert-warning" to="/admin/logging">
@@ -70,6 +78,12 @@
                                             <router-link class="dropdown-item alert-warning" to="/admin/password">
                                                 <i class="icon ion-locked">
                                                 </i>&nbsp;&nbsp;Force Change Password
+                                            </router-link>
+                                            <div class="dropdown-divider alert-warning">
+                                            </div>
+                                            <router-link class="dropdown-item alert-warning" to="/admin/import">
+                                                <i class="icon ion-locked">
+                                                </i>&nbsp;&nbsp;Import user from xlsx file
                                             </router-link>
                                         </div>
                                     </div>
@@ -94,15 +108,19 @@
                     </div>
                 </div>
             </div>
-            <footer class="bg-white sticky-footer" style="height: 45px;">
-                <div class="container my-auto">
-                    <div class="text-center my-auto copyright">
-                        <span style="font-style: italic;">Copyright © Aki.no.Alice@TyrantRey 2023</span>
+            <footer class="bg-white sticky-footer py-3">
+                <div class="container">
+                    <div class="text-center">
+                        <span class="copyright fst-italic bm-5">Copyright © <a href="http://140.134.53.58/~yungchen/"
+                                target="_blank">Yung-Chen Chou@周永振</a> 2023 </span>
+                        <br>
+                        <span class="copyright fst-italic">Copyright © <a href="https://github.com/LostALice"
+                                target="_blank">Aki.no.Alice@TyrantRey 張紹謙</a> 2022-2026</span>
+                        <br>
                     </div>
                 </div>
             </footer>
         </div>
-        <AlertBlock :message="message" />
     </div>
 </template>
 
@@ -110,6 +128,8 @@
     import { verifyLoginTimeout, getProfileIconImage } from "@/assets/js/helper.js"
     import { useRouter } from "vue-router"
     import { watch, ref } from "vue"
+
+    console.warn("不要增加我的工作量")
 
     const nid = ref(localStorage["nid"])
     const FixedTop = ref(false)
@@ -129,7 +149,6 @@
 
         if (timeout.timeout == true) {
             router.replace("/login")
-            alert("連線逾時")
             message.value = "連線逾時"
         }
 

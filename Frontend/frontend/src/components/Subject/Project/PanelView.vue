@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
-                    <EasyDataTable :headers="headers" :items="items" :search-value="searchValue" show-index table-class-name="customize-table">
+                    <EasyDataTable v-if="items" :headers="headers" :items="items" :search-value="searchValue" show-index table-class-name="customize-table" alternating>
                         <template #item-name="item">
                             <router-link :to="`/project/info/${$router.currentRoute.value.params.subjectID}`">{{ item.name }}</router-link>
                         </template>
@@ -59,15 +59,16 @@
                 </div>
             </div>
         </div>
-        <AlertBlock :message="message" />
+        <AlertBlock :message="message" @closeBlock="message=``" />
     </div>
 </template>
 
 <script setup>
-    import { getProject, deleteProject } from "@/assets/js/helper.js"
+    import { deleteProject } from "@/assets/js/helper.js"
+    import { getProject } from "@/assets/js/helper.js"
     import { useRouter } from "vue-router"
-    import "vue3-easy-data-table";
-    import { ref, onMounted } from "vue";
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const permissionLevel = ref(localStorage["permissionLevel"])
     const searchValue = ref("");

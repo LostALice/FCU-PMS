@@ -22,14 +22,14 @@ export function getJWTToken() {
 export async function getProfileIconImage() {
     const nid = localStorage["nid"]
 
-    return `${axios.defaults.baseURL}/getIconImages/${nid}`
+    return `${axios.defaults.baseURL}/getIconImages/${nid}/`
 }
 
 export async function getPermissionLevel() {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.get("/getPermissionLevel", {
+    const resp = await axios.get("/getPermissionLevel/", {
         params: {
             "nid": nid,
             "token": token,
@@ -57,7 +57,7 @@ export async function verifyLoginTimeout() {
 
     if (nid == null || token == null || nid == "" || token == "") return false
 
-    const resp = await axios.get("/TimeoutStatus", {
+    const resp = await axios.get("/TimeoutStatus/", {
         params: {
             "nid": nid,
             "token": token,
@@ -70,10 +70,22 @@ export async function JWTValidate() {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.get("/JWTValidation", {
+    const resp = await axios.get("/JWTValidation/", {
         params: {
             "nid": nid,
             "token": token,
+        }
+    })
+
+    return resp
+}
+
+export async function logout() {
+    const nid = localStorage["nid"]
+
+    const resp = await axios.post("/logout/", {
+        params: {
+            "nid": nid,
         }
     })
 
@@ -92,7 +104,7 @@ export async function createSubject(
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.post("/createSubject", null, {
+    const resp = await axios.post("/createSubject/", null, {
         params: {
             "nid": nid,
             "token": token,
@@ -112,7 +124,7 @@ export async function getSubject() {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.get("/getSubject",{
+    const resp = await axios.get("/getSubject/",{
         params: {
             "nid": nid,
             "token": token,
@@ -126,8 +138,9 @@ export async function deleteSubject(subjectUUID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.delete("/deleteSubject", {
-        data: {
+    console.log(typeof nid,typeof token,typeof subjectUUID)
+    const resp = await axios.delete("/deleteSubject/", {
+        params: {
             "nid": nid,
             "token": token,
             "subjectUUID": subjectUUID
@@ -142,7 +155,7 @@ export async function getProject(subjectUUID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.get("/getProject", {
+    const resp = await axios.get("/getProject/", {
         params: {
             "nid": nid,
             "token": token,
@@ -157,7 +170,7 @@ export async function createProject(subjectUUID, projectName) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.post("/createProject", null, {
+    const resp = await axios.post("/createProject/", null, {
         params: {
             "nid": nid,
             "token": token,
@@ -173,8 +186,8 @@ export async function deleteProject(projectUUID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.delete("/deleteProject",{
-        data: {
+    const resp = await axios.delete("/deleteProject/",{
+        params: {
             "nid": nid,
             "token": token,
             "projectUUID": projectUUID,
@@ -188,7 +201,7 @@ export async function getProjectInfo(projectUUID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.get("/getProjectInfo", {
+    const resp = await axios.get("/getProjectInfo/", {
         params: {
             "nid": nid,
             "token": token,
@@ -204,7 +217,7 @@ export async function getAnnouncementData(projectUUID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.get("/getAnnouncementData", {
+    const resp = await axios.get("/getAnnouncementData/", {
         params: {
             "nid": nid,
             "token": token,
@@ -219,7 +232,7 @@ export async function newAnnouncement(projectUUID, title, context) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.post("/createAnnouncement", null, {
+    const resp = await axios.post("/createAnnouncement/", null, {
         params: {
             "nid": nid,
             "token": token,
@@ -236,7 +249,7 @@ export async function getAnnouncementInfo(announcementUUID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.get("/getAnnouncementInfo", {
+    const resp = await axios.get("/getAnnouncementInfo/", {
         params: {
             "nid": nid,
             "token": token,
@@ -251,8 +264,8 @@ export async function deleteAnnouncement(projectUUID, announcementUUID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.delete("/deleteAnnouncement", {
-        data: {
+    const resp = await axios.delete("/deleteAnnouncement/", {
+        params: {
             "nid": nid,
             "token": token,
             "projectUUID": projectUUID,
@@ -268,11 +281,11 @@ export async function getStudentData(projectUUID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.get("/getStudentData", {
+    const resp = await axios.get("/getStudentData/", {
         params: {
             "nid": nid,
             "token": token,
-            "projectUUID": projectUUID,
+            "projectUUID": projectUUID
         }
     })
 
@@ -283,7 +296,7 @@ export async function getStudentList(projectUUID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.get("/getStudentList", {
+    const resp = await axios.get("/getStudentList/", {
         params: {
             "nid": nid,
             "token": token,
@@ -298,7 +311,7 @@ export async function newStudent(studentNID, projectUUID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.post("/newStudent", null, {
+    const resp = await axios.post("/newStudent/", null, {
         params: {
             "nid": nid,
             "token": token,
@@ -314,10 +327,12 @@ export async function getStudentInfo(studentNID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.get("/getStudentInfo", {
-        "nid": nid,
-        "token": token,
-        "studentNID": studentNID
+    const resp = await axios.get("/getStudentInfo/", {
+        params: {
+            "nid": nid,
+            "token": token,
+            "studentNID": studentNID
+        }
     })
 
     return resp.data
@@ -327,7 +342,7 @@ export async function deleteStudent(studentNID, projectUUID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.delete("/deleteStudent", {
+    const resp = await axios.delete("/deleteStudent/", {
         params: {
             "nid": nid,
             "token": token,
@@ -346,7 +361,7 @@ export async function importStudent(projectUUID, file_) {
     let xlsxData = new FormData();
     xlsxData.append("file_", file_);
 
-    const resp = await axios.post("/importStudent", xlsxData, {
+    const resp = await axios.post("/importStudent/", xlsxData, {
         params: {
             "nid": nid,
             "token": token,
@@ -362,7 +377,7 @@ export async function getTeacherData(projectUUID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.get("/getTeacherData", {
+    const resp = await axios.get("/getTeacherData/", {
         params: {
             "nid": nid,
             "token": token,
@@ -377,7 +392,7 @@ export async function getTeacherList(projectUUID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.get("/getTeacherList", {
+    const resp = await axios.get("/getTeacherList/", {
         params: {
             "nid": nid,
             "token": token,
@@ -392,7 +407,7 @@ export async function newTeacher(teacherNID, projectUUID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.post("/newTeacher", null, {
+    const resp = await axios.post("/newTeacher/", null, {
         params: {
             "nid": nid,
             "token": token,
@@ -408,10 +423,12 @@ export async function getTeacherInfo(teacherNID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.get("/getTeacherInfo", {
-        "nid": nid,
-        "token": token,
-        "teacherNID": teacherNID
+    const resp = await axios.get("/getTeacherInfo/", {
+        params: {
+            "nid": nid,
+            "token": token,
+            "teacherNID": teacherNID
+        }
     })
 
     return resp.data
@@ -421,8 +438,8 @@ export async function deleteTeacher(teacherNID, projectUUID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.delete("/deleteTeacher", {
-        data: {
+    const resp = await axios.delete("/deleteTeacher/", {
+        params: {
             "nid": nid,
             "token": token,
             "teacherNID": teacherNID,
@@ -440,7 +457,7 @@ export async function importTeacher(projectUUID, file_) {
     let xlsxData = new FormData();
     xlsxData.append("file_", file_);
 
-    const resp = await axios.post("/importTeacher", xlsxData, {
+    const resp = await axios.post("/importTeacher/", xlsxData, {
         params: {
             "nid": nid,
             "token": token,
@@ -456,7 +473,7 @@ export async function getGroupData(projectUUID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.get("/getGroupData", {
+    const resp = await axios.get("/getGroupData/", {
         params: {
             "nid": nid,
             "token": token,
@@ -486,7 +503,7 @@ export async function getGroupTeacherData(projectUUID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.get("/getGroupTeacherData", {
+    const resp = await axios.get("/getGroupTeacherData/", {
         params: {
             "nid": nid,
             "token": token,
@@ -501,7 +518,7 @@ export async function getGroupStudentData(projectUUID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.get("/getGroupStudentData", {
+    const resp = await axios.get("/getGroupStudentData/", {
         params: {
             "nid": nid,
             "token": token,
@@ -516,7 +533,7 @@ export async function newGroup(projectUUID, member, group_name, GID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.post("/newGroup", null, {
+    const resp = await axios.post("/newGroup/", null, {
         params: {
             "nid": nid,
             "token": token,
@@ -534,7 +551,7 @@ export async function getGroupToken() {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.get("/getGroupToken", {
+    const resp = await axios.get("/getGroupToken/", {
         params: {
             "nid": nid,
             "token": token,
@@ -544,15 +561,15 @@ export async function getGroupToken() {
     return resp.data
 }
 
-export async function deleteGroup(GID, projectUUID) {
+export async function deleteGroup(groupUUID, projectUUID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.delete("/deleteGroup", {
-        data: {
+    const resp = await axios.delete("/deleteGroup/", {
+        params: {
             "nid": nid,
             "token": token,
-            "GID": GID,
+            "groupUUID": groupUUID,
             "projectUUID": projectUUID
         }
     })
@@ -564,7 +581,7 @@ export async function getAssignment(projectUUID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.get("/getAssignment", {
+    const resp = await axios.get("/getAssignment/", {
         params: {
             "nid": nid,
             "token": token,
@@ -579,8 +596,8 @@ export async function deleteAssignment(assignmentUUID, projectUUID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.delete("/deleteAssignment", {
-        data: {
+    const resp = await axios.delete("/deleteAssignment/", {
+        params: {
             "nid": nid,
             "token": token,
             "assignmentUUID": assignmentUUID,
@@ -595,7 +612,7 @@ export async function getAssignmentInfo(projectUUID, assignmentUUID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.get("/getAssignmentInfo", {
+    const resp = await axios.get("/getAssignmentInfo/", {
         params: {
             "nid": nid,
             "token": token,
@@ -611,7 +628,7 @@ export async function downloadAssignment(projectUUID, taskUUID, fileID) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.get("/downloadAssignment", {
+    const resp = await axios.get("/downloadAssignment/", {
         params: {
             "nid": nid,
             "token": token,
@@ -628,7 +645,7 @@ export async function markAssignmentScore(taskUUID, projectUUID, marks) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.post("/markAssignmentScore", null, {
+    const resp = await axios.post("/markAssignmentScore/", null, {
         params: {
             "nid": nid,
             "token": token,
@@ -640,11 +657,11 @@ export async function markAssignmentScore(taskUUID, projectUUID, marks) {
     return resp.data
 }
 
-export async function newAssignment(projectUUID, gid, name, weight, date) {
+export async function newAssignment(projectUUID, gid, name, weight, date, allowedFileTypes) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.post("/newAssignment", null, {
+    const resp = await axios.post("/newAssignment/", null, {
         params: {
             "nid": nid,
             "token": token,
@@ -653,6 +670,7 @@ export async function newAssignment(projectUUID, gid, name, weight, date) {
             "name": name,
             "weight": weight,
             "date": date,
+            "allowedFileTypes": allowedFileTypes
         }
     })
     return resp.data
@@ -665,7 +683,7 @@ export async function uploadAssignment(projectUUID, taskUUID, filename, file_) {
     let formData = new FormData();
     formData.append("file_", file_);
 
-    const resp = await axios.post("/uploadAssignment", formData, {
+    const resp = await axios.post("/uploadAssignment/", formData, {
         params: {
             "nid": nid,
             "token": token,
@@ -682,7 +700,7 @@ export async function deleteAssignmentItem(taskUUID, fileUUID, author) {
     const token = localStorage["token"]
 
     const resp = await axios.delete("/deleteAssignmentItem/", {
-        data: {
+        params: {
             "nid": nid,
             "token": token,
             "taskUUID": taskUUID,
@@ -699,7 +717,7 @@ export async function changePassword_(oldPassword, newPassword) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.post("/changePassword", null, {
+    const resp = await axios.post("/changePassword/", null, {
         params: {
             "nid": nid,
             "token": token,
@@ -717,7 +735,7 @@ export async function changeIcon(file_, filename) {
     let formData = new FormData();
     formData.append("file_", file_);
 
-    const resp = await axios.post("/changeIcon", formData, {
+    const resp = await axios.post("/changeIcon/", formData, {
         params: {
             "nid": nid,
             "token": token,
@@ -727,6 +745,20 @@ export async function changeIcon(file_, filename) {
     return resp.data
 }
 
+export async function changeEmail(newEmail) {
+    const nid = localStorage["nid"]
+    const token = localStorage["token"]
+
+    const resp = await axios.post("/changeEmail/", null, {
+        params: {
+            "nid": nid,
+            "token": token,
+            "newEmail": newEmail
+        }
+    })
+
+    return resp.data
+}
 // dashboard
 export async function getDeadlineProject() {
     const nid = localStorage["nid"]
@@ -742,12 +774,29 @@ export async function getDeadlineProject() {
     return resp.data
 }
 
+// about
+export async function getAboutPage(targetNID) {
+    const nid = localStorage["nid"]
+    const token = localStorage["token"]
+
+    const resp = await axios.get("/getAboutPage/", {
+        params: {
+            "nid": nid,
+            "token": token,
+            "targetNID": targetNID,
+        }
+    })
+    let user_info = resp.data[0]
+    user_info["ICON"] = `${axios.defaults.baseURL}/getIconImages/${user_info["NID"]}/`
+    return user_info
+}
+
 // Administration
 export async function getLog() {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
 
-    const resp = await axios.get("/getLogs", {
+    const resp = await axios.get("/getLogs/", {
         params: {
             "nid": nid,
             "token": token,
@@ -760,13 +809,30 @@ export async function getLog() {
 export async function forceChangePassword(target_nid, password) {
     const nid = localStorage["nid"]
     const token = localStorage["token"]
-    console.log(target_nid, password)
-    const resp = await axios.post("/forceChangePassword", null, {
+
+    const resp = await axios.post("/forceChangePassword/", null, {
         params: {
             "nid": nid,
             "token": token,
             "target_nid": target_nid,
             "password": password,
+        }
+    })
+
+    return resp.data
+}
+
+export async function importUser(file_) {
+    const nid = localStorage["nid"]
+    const token = localStorage["token"]
+
+    let xlsxData = new FormData();
+    xlsxData.append("file_", file_);
+
+    const resp = await axios.post("/importUsers/", xlsxData, {
+        params: {
+            "nid": nid,
+            "token": token,
         }
     })
 

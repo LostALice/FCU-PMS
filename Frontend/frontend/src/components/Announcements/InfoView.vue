@@ -12,7 +12,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <iframe :srcdoc="context" class="h-100"></iframe>
+                <iframe :srcdoc="context" class="h-100 w-100"></iframe>
                 </div>
             <footer class="card-footer">
                 <div class="row">
@@ -27,8 +27,9 @@
 
 <script setup>
     import { getAnnouncementInfo } from "@/assets/js/helper.js"
-    import { useRouter } from "vue-router";
-    import { ref, onMounted } from "vue"
+    import { useRouter } from "vue-router"
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const title = ref("")
     const date = ref("")

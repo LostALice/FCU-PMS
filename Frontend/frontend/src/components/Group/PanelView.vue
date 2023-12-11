@@ -30,7 +30,7 @@
                 </div>
                 <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
 
-                    <EasyDataTable :headers="headers" :items="items" table-class-name="customize-table" show-index>
+                    <EasyDataTable v-if="items" :headers="headers" :items="items" table-class-name="customize-table" show-index alternating>
                         <template #item-name="item">
                             <router-link :to="`${$route.path}/info/${item.groupUUID}`">{{ item.name }} </router-link>
                         </template>
@@ -43,10 +43,10 @@
                             </div>
                         </template>
                     </EasyDataTable>
-
                 </div>
             </div>
         </div>
+        <AlertBlock :message="message" @closeBlock="message=``" />
     </div>
 </template>
 
@@ -55,14 +55,16 @@
 </script>
 
 <script setup>
-    import { getGroupData, deleteGroup } from "@/assets/js/helper.js";
-    import { ref, onMounted } from "vue"
-    import "vue3-easy-data-table";
-    import { useRouter } from "vue-router";
+    import { getGroupData } from "@/assets/js/helper.js"
+    import { deleteGroup } from "@/assets/js/helper.js"
+    import { useRouter } from "vue-router"
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const router = useRouter()
     const projectUUID = router.currentRoute.value.params.projectID
     const permissionLevel = ref(localStorage["permissionLevel"])
+    const message = ref("")
     const items = ref([])
 
     const headers = [
@@ -101,11 +103,12 @@
         }
     })
 
-    function deleteItem(item) {
+    async function deleteItem(item) {
         if (!confirm("確定刪除項目？")) {
             return
         }
         items.value.splice(item.index-1, 1)
-        deleteGroup(item.groupUUID, projectUUID)
+        await deleteGroup(item.groupUUID, projectUUID)
+        message.value = "刪除成功"
     }
 </script>

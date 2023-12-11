@@ -1,9 +1,11 @@
 # Code by AkinoAlice@Tyrant_Rex
 
+from handler import SQLHandler, LOGGER
 from permission import PERMISSION
-from handler import SQLHandler
 
 import hashlib
+import random
+import string
 import time
 import jwt
 import re
@@ -12,19 +14,13 @@ import re
 class AUTHENTICATION(SQLHandler):
     def __init__(self) -> None:
         self.sql_init()
-        self.injection_keywords = ["'",
-                                   '"',
-                                   '#',
-                                   '-',
-                                   '--',
+        self.injection_keywords = ['--',
                                    "'%20--",
                                    "--';",
                                    "'%20;",
                                    "=%20'",
                                    '=%20;',
                                    '=%20--',
-                                   '#',
-                                   "'",
                                    "=%20;'",
                                    "=%20'",
                                    "'OR SELECT *",
@@ -114,7 +110,6 @@ class AUTHENTICATION(SQLHandler):
                                    '&apos;%20OR',
                                    "'sqlattempt1",
                                    '(sqlattempt2)',
-                                   '|',
                                    '%7C',
                                    '*|',
                                    '%2A%7C',
@@ -122,11 +117,8 @@ class AUTHENTICATION(SQLHandler):
                                    '%2A%28%7C%28mail%3D%2A%29%29',
                                    '*(|(objectclass=*))',
                                    '%2A%28%7C%28objectclass%3D%2A%29%29',
-                                   '(',
                                    '%28',
-                                   ')',
                                    '%29',
-                                   '&',
                                    '%26',
                                    '!',
                                    '%21',
@@ -153,8 +145,9 @@ class AUTHENTICATION(SQLHandler):
         Returns:
             bool: True = pass, False = Error
         """
+
         if nid:
-            return True if re.match(r"^[dtDT]\d{7}$", nid) else False
+            ...
 
         if JWT:
             try:
@@ -163,43 +156,122 @@ class AUTHENTICATION(SQLHandler):
                 return False
 
         if prompt in self.injection_keywords:
+            print("SQL injection Warning:", prompt, flush=True)
             return False
 
         return True
 
     def add_salt(self, nid: str, password: str) -> str:
-        sha256 = hashlib.sha256()
-        string = password + nid
-        sha256.update(string.encode("utf8"))
-        return sha256.hexdigest()
+        """add salt to the given password
 
-    # return a hashed and salted password
-    # method: "hashed password" + "nid" => hash function = new hashed password
-    def authenticate(self, nid: str, hashed_password: str) -> [bool, str]:
-        sha256 = hashlib.sha256()
-        string = hashed_password + nid
+        Args:
+            nid (str): NID
+            password (str): password
 
-        sha256.update(string.encode("utf8"))
+        Returns:
+            salted_string: [tuple] (
+                salted_password: [str] a salt password
+                salt: [str] a salt string
+            )
+        """
+        sha256 = hashlib.sha256()
+
+        salt = "".join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(4))
+
+        self.cursor.execute("UPDATE login SET login.SALT = %s WHERE login.NID = %s", (salt, nid))
+        self.conn.commit()
+
+        salted_string = password + salt
+        sha256.update(salted_string.encode("utf8"))
+        return sha256.hexdigest(), salt
+
+    def authenticate(self, nid: str, hashed_password: str) -> dict[str, bool]:
+        """return a hashed and salted password
+        method: NID(salt) + password(sha256 string) =sha256=> salted password
+
+        Args:
+            nid (str): NID
+            hashed_password (str): hashed password from frontend
+
+        Returns:
+            x-access-token: [str] jwt token
+            authenticate: [bool] True if enter the correct password
+        """
+        LOGGER().log("authenticate (login)", (nid, hashed_password))
+
+        if not self.SQLInjectionCheck(nid=nid):
+            return {
+                "authenticate": False
+            }
+
+        sha256 = hashlib.sha256()
+        self.cursor.execute("SELECT login.SALT FROM login WHERE login.NID = %s", (nid,))
+        salt = self.cursor.fetchall()
+
+        if salt:
+            salt = salt[0][0]
+        else:
+            return {
+                "authenticate": False
+            }
+
+        salted_string = hashed_password + salt
+
+        sha256.update(salted_string.encode("utf8"))
         new_hashed_password = sha256.hexdigest()
-        if not self.SQLInjectionCheck(nid=nid, JWT=hashed_password):
-            return False
 
         self.cursor.execute(
-            "SELECT * FROM login WHERE `NID` = %s and `PASSWORD` = %s;", (nid, new_hashed_password))
+            "SELECT * FROM login WHERE `NID` = %s and `PASSWORD` = %s", (nid, new_hashed_password))
 
         if self.cursor.fetchall():
             token = self.generate_jwt_token(nid)
             self.cursor.execute(
-                "UPDATE login SET `NID` = %s, `TOKEN` = %s WHERE `NID` = %s;", (nid, token, nid))
+                "UPDATE login SET `NID` = %s, `TOKEN` = %s,`LAST_LOGIN` = CURRENT_TIMESTAMP WHERE `NID` = %s;", (nid, token, nid))
             self.conn.commit()
             self.conn.close()
             return {
+                "authenticate": True,
                 "x-access-token": token
             }
         else:
-            return False
+            self.cursor.execute(
+                "UPDATE login SET `NID` = %s, `TOKEN` = %s WHERE `NID` = %s;", (nid, None, nid))
+            self.conn.commit()
+            return {
+                "authenticate": False
+            }
+
+    def logout(self, nid: str, token: str) -> bool:
+        """log user out from the system
+
+        Args:
+            nid (str): NID
+            token (str): jwt
+
+        Returns:
+            bool: logged out
+        """
+        LOGGER().log("logout", (nid, token))
+
+        self.cursor.execute(
+            "UPDATE login WHERE NID = %s AND TOKEN = %s SET login.TOKEN = NULL", (nid, token))
+        self.conn.commit()
+        return True
 
     def change_password(self, nid: str, old_password: str, new_password: str) -> bool:
+        """change user password
+
+        Args:
+            nid (str): NID
+            old_password (str): old password
+            new_password (str): new password
+
+        Returns:
+            success: [bool] success or not
+        """
+        LOGGER().log("change_password", (nid, old_password, new_password))
+
+
         sha256 = hashlib.sha256()
         string = old_password + nid
 
@@ -214,7 +286,7 @@ class AUTHENTICATION(SQLHandler):
         if not self.cursor.fetchall():
             return False
 
-        new_password = self.add_salt(nid, new_password)
+        new_password = self.add_salt(nid, new_password)[0]
 
         self.cursor.execute("""
             UPDATE
@@ -237,6 +309,14 @@ class AUTHENTICATION(SQLHandler):
         return True
 
     def generate_jwt_token(self, user_id: str) -> str:
+        """generates jwt token the setting according to the settings.json
+
+        Args:
+            user_id (str): NID
+
+        Returns:
+            Json_Web_Token: [str] Json Web Token
+        """
         payload = {
             "user_id": user_id,
             "exp": int(time.time()) + self.JWT_TOKEN_EXPIRE_TIME
@@ -246,6 +326,15 @@ class AUTHENTICATION(SQLHandler):
         return token
 
     def verify_jwt_token(self, nid: str, token: str) -> bool:
+        """verify the jwt is valid or not
+
+        Args:
+            nid (str): NID
+            token (str): jwt
+
+        Returns:
+            validation: [bool] True if the jwt is valid
+        """
         if not self.SQLInjectionCheck(nid=nid, JWT=token):
             return False
 
@@ -257,6 +346,15 @@ class AUTHENTICATION(SQLHandler):
             return False
 
     def verify_timeout(self, nid: str, token: str) -> bool:
+        """verify the jwt timed out or not
+
+        Args:
+            nid (str): NID
+            token (str): jwt
+
+        Returns:
+            timeout_status: [bool] True if timed out (wrong format also return False)
+        """
         if not self.SQLInjectionCheck(nid=nid, JWT=token):
             return False
 
@@ -267,8 +365,10 @@ class AUTHENTICATION(SQLHandler):
                 "UPDATE login SET TOKEN = NULL WHERE NID = %s", (nid,))
             self.conn.commit()
             return False
+
         except jwt.exceptions.DecodeError as error:
             return False
+
         except Exception as error:
             print(error, flush=True)
             return False
@@ -279,8 +379,20 @@ class AUTHENTICATION(SQLHandler):
         else:
             return False
 
-    def forceChangePassword(self, nid: str, password: str):
-        new_password = self.add_salt(nid, password)
+    def forceChangePassword(self, nid: str, password: str) -> bool:
+        """Admin Tools: Force Changing the user Password (admin only)
+
+        Args:
+            nid (str): NID
+            token (str): password
+
+        Returns:
+            success: [bool] return True after changing password
+        """
+        LOGGER().log("forceChangePassword", (nid, password))
+
+        new_password = self.add_salt(nid, password)[0]
+
         self.cursor.execute("""
             UPDATE
                 login
@@ -297,7 +409,7 @@ class AUTHENTICATION(SQLHandler):
             UPDATE login
             SET login.NID = %s, login.TOKEN = %s
             WHERE login.NID = %s;""",
-            (nid, token, nid))
+                            (nid, token, nid))
 
         self.conn.commit()
         self.conn.close()

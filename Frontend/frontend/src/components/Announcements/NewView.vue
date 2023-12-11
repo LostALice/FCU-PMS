@@ -66,7 +66,7 @@
                 </div>
             </div>
         </form>
-        <AlertBlock :message="message" />
+        <AlertBlock :message="message" @closeBlock="message=``" />
     </div>
 </template>
 
@@ -147,7 +147,7 @@
 
 <script setup>
     import { newAnnouncement } from "@/assets/js/helper.js"
-    import { useRouter } from "vue-router";
+    import { useRouter } from "vue-router"
     import { ref } from "vue"
 
     const message = ref("")
@@ -161,10 +161,12 @@
             message.value = "標題不能為空"
             return
         }
-        const resp = await newAnnouncement(projectUUID, title.value, context.value)
-        if (resp.status_code == 200) {
-            router.push(`/project/${projectUUID}/announcement`)
+        const status = await newAnnouncement(projectUUID, title.value, context.value)
+        if (status.status_code == 400) {
+            message.value = "SQLInjectionCheck: " + status["SQLInjectionCheck"]
+            return
         }
+
         router.push(`/project/${projectUUID}/announcement`)
     }
 </script>

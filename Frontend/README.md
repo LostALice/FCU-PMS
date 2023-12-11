@@ -1,7 +1,5 @@
 # 逢甲大學專題管理系統
 
-[![](https://wakatime.com/badge/user/09ce4786-a8a5-43eb-8a65-50ad8684b5da/project/7e57b855-98dd-4e41-b974-e1700377fa86.svg)](https://wakatime.com/badge/user/09ce4786-a8a5-43eb-8a65-50ad8684b5da/project/7e57b855-98dd-4e41-b974-e1700377fa86)
-
 # Permission level
 
 | Level | Role      |
@@ -80,5 +78,6 @@
       - info
       - new
 - profile
+- about
 - Error pages (404, 403)
 ```

@@ -2,6 +2,8 @@
 node_modules
 /dist
 
+# temporary files
+*.temp
 
 # local env files
 .env.local
@@ -28,3 +30,5 @@ __pycache__/
 *.pyo
 
 setting.json
+
+/Backend/backend/assignment/*

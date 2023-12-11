@@ -28,7 +28,7 @@
                         </div>
                     </div>
                 </div>
-                <EasyDataTable :headers="headers" :items="items" table-class-name="customize-table" show-index>
+                <EasyDataTable v-if="items" :headers="headers" :items="items" table-class-name="customize-table" show-index alternating>
                     <template #item-title="item">
                         <router-link :to="`${$route.path}/info/${item.announcementUUID}`">{{ item.title }} </router-link>
                     </template>
@@ -47,10 +47,11 @@
 </template>
 
 <script setup>
-    import { getAnnouncementData, deleteAnnouncement } from "@/assets/js/helper.js"
+    import { getAnnouncementData} from "@/assets/js/helper.js"
+    import { deleteAnnouncement } from "@/assets/js/helper.js"
     import { useRouter } from "vue-router"
-    import { ref, onMounted } from "vue";
-    import "vue3-easy-data-table";
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const router = useRouter()
     const projectUUID = router.currentRoute.value.params.projectID

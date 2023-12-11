@@ -62,9 +62,10 @@
 
 
 <script setup>
-    import { getProjectInfo } from "@/assets/js/helper";
-    import { useRouter } from "vue-router";
-    import { ref, onMounted } from "vue";
+    import { getProjectInfo } from "@/assets/js/helper"
+    import { useRouter } from "vue-router"
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
     const router = useRouter()
     const routerSubjectUUID = router.currentRoute.value.params.subjectID

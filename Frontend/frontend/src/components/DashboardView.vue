@@ -10,22 +10,22 @@
                         <div class="row align-items-center no-gutters">
                             <div class="col me-2">
                                 <div class="text-uppercase text-primary fw-bold mb-1"><span>作業名稱</span></div>
-                                <div class="text-dark fw-bold h5 mb-0" v-if="deadlineProject.length > 0">
-                                    <router-link :to="`/project/${deadlineProject.PROJECT_ID}/assignment`">
-                                        <span class="alert-warning">{{ deadlineProject.NAME }}</span>
+                                <div class="text-dark fw-bold h5 mb-0" v-if="projectList[0]">
+                                    <router-link :to="`/project/${projectList[0].PROJECT_ID}/assignment`">
+                                        <span class="alert-warning">{{ projectList[0].ASSIGNMENT_NAME }}</span>
                                     </router-link>
                                 </div>
                                 <div class="text-dark fw-bold h5 mb-0" v-else>
                                     <span>沒有作業</span>
                                 </div>
                             </div>
-                            <div class="col me-2" v-if="deadlineProject.length > 0">
+                            <div class="col me-2" v-if="projectList[0]">
                                 <div class="text-uppercase text-primary fw-bold mb-1"><span>作業截止日期</span></div>
                                 <div class="text-dark fw-bold h5 mb-0">
-                                    <span>{{ deadlineProject.SUBMISSION_DATE }}</span>
+                                    <span>{{ projectList[0].SUBMISSION_DATE }}</span>
                                 </div>
                             </div>
-                            <div class="col me-2" v-else>
+                            <div class="col me-2"  v-else>
                                 <div class="text-uppercase text-primary fw-bold mb-1"><span>作業截止日期</span></div>
                                 <div class="text-dark fw-bold h5 mb-0">
                                     <span>沒有截止日期</span>
@@ -38,7 +38,7 @@
             </div>
         </div>
         <hr>
-        <div class="row" v-if="deadlineProject.length > 0">
+        <div class="row" v-if="projectList[0]">
             <div class="col">
                 <div class="card shadow my-3">
                     <div class="card-header py-3">
@@ -57,9 +57,9 @@
                             </div>
                         </div>
                         <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
-                            <EasyDataTable :headers="headers" :items="projectList" table-class-name="customize-table" show-index>
-                                <template #item-NAME="item">
-                                    <router-link :to="`/project/${deadlineProject.PROJECT_ID}/assignment`">{{ item.NAME }} </router-link>
+                            <EasyDataTable :headers="headers" :items="projectList" table-class-name="customize-table" show-index alternating>
+                                <template #item-ASSIGNMENT_NAME="item">
+                                    <router-link :to="`/project/${item.PROJECT_ID}/assignment`">{{ item.ASSIGNMENT_NAME }} </router-link>
                                 </template>
                             </EasyDataTable>
                         </div>
@@ -72,16 +72,20 @@
 
 <script setup>
     import { getDeadlineProject } from "@/assets/js/helper.js"
-    import { ref, onMounted } from "vue"
-    import "vue3-easy-data-table";
+    import { onMounted } from "vue"
+    import { ref } from "vue"
 
-    const deadlineProject = ref({})
     const projectList = ref([])
 
     const headers = [
         {
+            text: "項目",
+            value: "PROJECT_NAME",
+            sortable: true
+        },
+        {
             text: "作業標題",
-            value: "NAME",
+            value: "ASSIGNMENT_NAME",
             sortable: true
         },
         {
@@ -93,13 +97,13 @@
 
     onMounted(async () => {
         const project = await getDeadlineProject()
-        if (!Array.isArray(project.data)) {
+        if (project.data == null) {
             return
         }
+
         for (const i of project.data) {
-            i.SUBMISSION_DATE = i.SUBMISSION_DATE.replace("T", " ")
+            i["SUBMISSION_DATE"] = i["SUBMISSION_DATE"].replace("T", " ")
             projectList.value.push(i)
         }
-        deadlineProject.value = projectList.value[0]
     })
 </script>

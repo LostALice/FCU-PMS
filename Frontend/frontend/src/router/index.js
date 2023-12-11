@@ -28,6 +28,12 @@ const routes = [
         name: "個人資料",
         component: () => import("@/components/ProfileView.vue"),
     },
+    // About page
+    {
+        path: "/about/:NID",
+        name: "關於",
+        component: () => import("@/components/AboutView.vue"),
+    },
     // Teacher page
     {
         path: "/project/:projectID/teacher",
@@ -164,6 +170,11 @@ const routes = [
         path: "/admin/password",
         name: "更改密碼",
         component: () => import("@/components/Administration/PasswordView.vue"),
+    },
+    {
+        path: "/admin/import",
+        name: "匯入使用者",
+        component: () => import("@/components/Administration/ImportView.vue"),
     },
     // 404 page
     {
