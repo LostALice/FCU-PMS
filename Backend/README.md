@@ -1,7 +1,5 @@
 # 逢甲大學創能學院專題管理系統
 
-[![wakatime](https://wakatime.com/badge/user/09ce4786-a8a5-43eb-8a65-50ad8684b5da/project/2f818c62-a844-4b03-9072-4e4658b25ced.svg)](https://wakatime.com/badge/user/09ce4786-a8a5-43eb-8a65-50ad8684b5da/project/2f818c62-a844-4b03-9072-4e4658b25ced)
-
 # In development
 
 ```
@@ -20,7 +18,7 @@ npm run build
 > The following environment variables edit the default setting of [setting.json](#settingjson) file
 > The following environment variables can be edit in [docker-compose.yaml](../docker-compose.yaml)
 
-| Environment variables | Default setting                | Description                                              |
+| Environment variables | Default                        | Description                                              |
 | --------------------- | ------------------------------ | -------------------------------------------------------- |
 | DATABASE              | PMS                            | mysql schema name                                        |
 | HOST                  | localhost                      | mysql database host address should be internal docker ip |
@@ -31,7 +29,8 @@ npm run build
 
 # setting.json
 
-> Setting of setting.json
+> Detail of setting.json
+> setting.json will be automatically generated in the initialize section, see [setup.py](./backend/setup.py)
 > setting.json includes all the permission setting, database setting, JSON Web token setting and CORS settings
 
 `The default setting of setting.json file`
@@ -103,11 +102,11 @@ npm run build
 |             | JWT_ALGORITHM         | string   | HS256                                        | JSON Web Token encrypt algorithm              |
 | CORS        |                       |          |                                              |                                               |
 |             | ALLOW_ORIGINS         | list     | ["http://localhost:8080","http://localhost"] | CORS allowed origins                          |
-|             | ALLOW_ORIGINS_REGEX   | string   | too long, see the regex of localhost         | CORS allowed origins in regex                 |
+|             | ALLOW_ORIGINS_REGEX   | string   | too long, see regex of localhost             | CORS allowed origins in regex                 |
 
 # Super User Settings
 
-> Super User also the admin
+> Super User as known as admin
 
 | class      | subclass          | datatype | default        | description                |
 | ---------- | ----------------- | -------- | -------------- | -------------------------- |
@@ -118,5 +117,5 @@ npm run build
 # DataBase schema settings
 
 > The default settings of the database schema
-> database structure
+
 ![image](./schema.png)
