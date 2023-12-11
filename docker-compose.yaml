@@ -20,41 +20,30 @@ services:
       # optional
       # mysql database scheme name
       # - DATABASE="pms"
-
       # mysql ip address
       # this following host is docker internal IP address
       - HOST=172.30.0.2
-
       # mysql username
       - USER=root
-
       # mysql password
       # should be same as mysql.MYSQL_ROOT_PASSWORD
-      - PASSWORD=your_mysql_password # defult Abc!@#$%^&*()
-
+      - PASSWORD=Abc!@#$%^&*()
       # json web token
-      - JWT_SECRET=your_jwt_secret # defult Xyz)(*&^%$#@!)
-
+      - JWT_SECRET=Xyz)(*&^%$#@!)
       # ----------------------------------------------------------------
-
       # CORS allowed orgins
       # use "," to split different orgins
-      - CORS_ALLOW_ORIGINS=your_orgins
-
+      - CORS_ALLOW_ORIGINS=https://pms.tyrantrex.icu,http://test.tyrantrex.icu
       # optional
       # - ALLOW_ORIGINS_REGEX=regex
-
       # ----------------------------------------------------------------
-
       # superuser setting
       # SUPER_USER_NID=T0000000
       # SUPER_USER_USERNAME=ADMIN
       # SUPER_USER_PASSWORD=password@ADMIN
-
     ports:
       # external: internal
       - 8000:8080
-
     # start after mysql container
     depends_on:
       mysql:
@@ -63,17 +52,13 @@ services:
 
   mysql:
     image: mysql:latest
-
     # optional
     container_name: mysql
-
     environment:
       # mysql root password
       # should be same as pms.PASSWORD
-      - MYSQL_ROOT_PASSWORD=your_mysql_password # defult Abc!@#$%^&*()
-
+      - MYSQL_ROOT_PASSWORD=Abc!@#$%^&*()
     ports:
       # external: internal
       - 3306:3306
-
     restart: unless-stopped
